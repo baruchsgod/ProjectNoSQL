@@ -18,7 +18,7 @@
   </div>
   <br>
   <div class="container plan">
-    <button id="uno" class="btn btn-lg btn-warning" type="submit" name="planA">Plan A</button>
+    <button id="uno" class="btn btn-lg btn-warning" type="submit" name="planA" >Plan A</button>
     <a href="#" onclick="information(uno.innerText)" >More Information...</a>
   </div>
   <br>
@@ -39,8 +39,8 @@
 
       if(plan==="Plan A"){
         Swal.fire({
-          title: 'Sweet!',
-          text: 'Modal with a custom image.',
+          title: 'Plan A',
+          text: 'Unlimited number of checklists for creation, 3 types of reports, unlimited comments',
           textColor:'#fff',
           imageUrl: 'images/sticky.png',
           imageWidth: 250,
@@ -50,8 +50,8 @@
         })
       }else if (plan==="Plan B") {
         Swal.fire({
-          title: 'Sweet!',
-          text: 'Modal with a custom image.',
+          title: 'Plan B',
+          text: 'Max 10 checklists for creation, 2 types of reports, max 10 comments per checklist',
           imageUrl: 'images/sticky.png',
           imageWidth: 250,
           imageHeight: 100,
@@ -60,8 +60,8 @@
         })
       }else{
         Swal.fire({
-          title: 'Sweet!',
-          text: 'Modal with a custom image.',
+          title: 'Plan C',
+          text: 'Max 5 checklists for creation, 1 type of report, max 5 comments per checklist',
           imageUrl: 'images/sticky.png',
           imageWidth: 250,
           imageHeight: 100,

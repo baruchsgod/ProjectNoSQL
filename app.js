@@ -135,6 +135,10 @@ app.get("/welcome",function(req,res){
   res.render("welcome",{});
 })
 
+app.get("/home",function(req,res){
+  res.render("home",{});
+})
+
 app.post("/", function(req, res) {
   if (req.body.companyButton === "Sign Up") {
     var email = stripTags(req.body.userEmailRegister);
@@ -186,7 +190,7 @@ app.post("/", function(req, res) {
     User.insertMany(userArray,function(err){
       if(!err){
         console.log("Information uploaded succesfully");
-        
+
         success = "Welcome to Sticky, Please Log In";
         res.redirect("/");
       }else{
@@ -196,7 +200,30 @@ app.post("/", function(req, res) {
 
     // filter_var
   } else {
-    res.redirect("/welcome");
+    var email = stripTags(req.body.userEmail);
+    email = email.replace(" ", "");
+
+    var pass = stripTags(req.body.pass);
+    pass = pass.replace(" ","");
+
+    console.log(email);
+    console.log(pass);
+
+    User.findOne({"credentials.email":email,"credentials.password":pass},function(err,foundUser){
+      console.log(foundUser);
+      if(!err){
+        if(foundUser!=null){
+          res.redirect("/welcome");
+        }else{
+          success = "Email or Password does not match";
+          res.redirect("/")
+        }
+
+      }else{
+        console.log(err);
+        console.log("Error Error");
+      }
+    });
   }
 
 

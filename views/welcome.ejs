@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Welcome</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="css/welcome.css">
+  <link rel="stylesheet" href="css/sweetalert2.css">
+</head>
+
+<body>
+  <div class="welcomeLogo">
+    <h1 class="welcome">Welcome to </h1>
+    <img src="images/sticky.png" alt="sticky" class="sticky">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  </div>
+  <br>
+  <div class="container plan">
+    <button id="uno" class="btn btn-lg btn-warning" type="submit" name="planA">Plan A</button>
+    <a href="#" onclick="information(uno.innerText)" >More Information...</a>
+  </div>
+  <br>
+  <div class="container plan">
+    <button id="dos" class="btn btn-lg btn-warning" type="submit" name="planA">Plan B</button>
+    <a href="#" onclick="information(dos.innerText)">More Information...</a>
+  </div>
+
+  <br>
+  <div class="container plan">
+    <button id="tres" class="btn btn-lg btn-warning" type="submit" name="planA">Plan C</button>
+    <a href="#" onclick="information(tres.innerText)">More Information...</a>
+  </div>
+
+  <script src="jquery/sweetalert2.all.min.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    function information(plan) {
+
+      if(plan==="Plan A"){
+        Swal.fire({
+          title: 'Sweet!',
+          text: 'Modal with a custom image.',
+          textColor:'#fff',
+          imageUrl: 'images/sticky.png',
+          imageWidth: 250,
+          imageHeight: 100,
+          imageAlt: 'Custom image',
+          background:'#214252',
+        })
+      }else if (plan==="Plan B") {
+        Swal.fire({
+          title: 'Sweet!',
+          text: 'Modal with a custom image.',
+          imageUrl: 'images/sticky.png',
+          imageWidth: 250,
+          imageHeight: 100,
+          imageAlt: 'Custom image',
+          background:'#f05454',
+        })
+      }else{
+        Swal.fire({
+          title: 'Sweet!',
+          text: 'Modal with a custom image.',
+          imageUrl: 'images/sticky.png',
+          imageWidth: 250,
+          imageHeight: 100,
+          imageAlt: 'Custom image',
+          background:'#3797a4',
+        })
+      }
+
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Login Tracker</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://use.fontawesome.com/f58802a848.js"></script>
+</head>
+
+<body>
+
+  <div class="row">
+    <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 logIn">
+      <img src="images/sticky.png" alt="sticky" class="sticky">
+      <div id="first">
+        <h3 class="">Log in to your account</h3>
+        <form class="form-group formulario" action="/" method="post">
+          <div class="container">
+            <i class="fa fa-user fa-2x icon"></i>
+            <input class="form-control formulario" type="email" name="userEmail" value="" placeholder="Enter your email" required>
+            <i class="fa fa-unlock-alt fa-2x icon"></i>
+            <input class="form-control formulario" type="password" name="pass" value="" placeholder="Enter your password" required>
+            <input class="btn btn-lg btn-outline-light formulario boton" type="submit" name="lButton" value="Log In">
+          </div>
+          <p id="par">Dont have an account?</p>
+          <a id="aSignUp" href="#">Sign Up</a>
+        </form>
+      </div>
+      <div id="second">
+        <h3 class="">Register your account</h3>
+        <form class="form -group formulario" action="index.html" method="post">
+          <div class="container">
+            <input class="form-control formulario" type="email" name="userEmailRegister" value="" placeholder="Enter your email" required>
+            <input class="form-control formulario" type="text" name="fname" value="" placeholder="Enter your first Name" required>
+            <input class="form-control formulario" type="text" name="lname" value="" placeholder="Enter your last name" required>
+            <input class="form-control formulario" type="password" name="userPassword" value="" placeholder="Enter your password" required>
+            <input class="form-control formulario" type="text" name="userCompany" value="" placeholder="Enter the name of your company" required>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01" name="jProfile">Select job description</label>
+              </div>
+              <select class="custom-select" id="inputGroupSelect01">
+                <option selected>Choose...</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+              </select>
+            </div>
+            <input class="form-control formulario" type="text" name="uCountry" value="" placeholder="Enter your country of origin" required>
+            <input class="btn btn-lg btn-outline-light formulario boton" type="submit" name="sButton" value="Sign Up">
+          </div>
+          <p id="par">Already have an account?</p>
+          <a id="aLogIn" href="#">Log In</a>
+        </form>
+      </div>
+
+
+
+    </div>
+    <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 signUp">
+
+      <img src="images/signature.png" alt="tracker" class="imagen">
+    </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="jquery/login.js" charset="utf-8"></script>
+</body>
+
+</html>

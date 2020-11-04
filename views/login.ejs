@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Login Tracker</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://use.fontawesome.com/f58802a848.js"></script>
+  <link rel="stylesheet" href="css/sweetalert2.css">
+</head>
+
+<body>
+
+  <div class="row">
+    <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 logIn">
+      <img src="images/sticky.png" alt="sticky" class="sticky">
+      <div id="first">
+        <h3 class="">Log in to your account</h3>
+        <form class="form-group formulario" action="/" method="post">
+          <div class="container">
+            <i class="fa fa-user fa-2x icon"></i>
+            <input class="form-control formulario" type="email" name="userEmail" value="" placeholder="Enter your email" required>
+            <i class="fa fa-unlock-alt fa-2x icon"></i>
+            <input class="form-control formulario" type="password" name="pass" value="" placeholder="Enter your password" required>
+            <input class="btn btn-lg btn-outline-light formulario boton" type="submit" name="companyButton" value="Log In">
+          </div>
+          <p class="successful"><%=success%></p>
+          <br>
+          <p id="par">Dont have an account?</p>
+          <a id="aSignUp" href="#">Sign Up</a>
+        </form>
+      </div>
+      <div id="second">
+        <h3 class="">Register your account</h3>
+        <form class="form -group formulario" action="/" method="post">
+          <div class="container">
+            <input class="form-control formulario" type="email" name="userEmailRegister" value="" placeholder="Enter your email" required>
+            <input class="form-control formulario" type="text" name="fname" value="" placeholder="Enter your first Name" required>
+            <input class="form-control formulario" type="text" name="lname" value="" placeholder="Enter your last name" required>
+            <input class="form-control formulario" type="password" name="userPassword" value="" placeholder="Enter your password" required>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">Company</label>
+              </div>
+              <select class="custom-select" id="inputGroupSelect01">
+                <option name="companySelected" selected>Choose...</option>
+                <% for(i=0;i<companyDesc.length;i++){ %>
+                <option value=<%= companyDesc[i].name%>><%=companyDesc[i].name%></option>
+                <% } %>
+              </select>
+            </div>
+            <label class="optional">Optional field, choose only if your company has a plan*</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01" name="jProfile">Select job description</label>
+              </div>
+              <select name="selectedJob" class="custom-select" id="inputGroupSelect01">
+                <option selected>Choose...</option>
+                <% for(i=0;i<jobDesc.length;i++){ %>
+                <option value=<%= jobDesc[i].name %>><%= jobDesc[i].name %></option>
+                <% } %>
+              </select>
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01" name="jProfile">Country</label>
+              </div>
+              <select name="countrySelected" class="custom-select" id="inputGroupSelect01">
+                <option selected>Choose...</option>
+                <% for(i=0;i<countryDesc.length;i++){ %>
+
+                <option value=<%= countryDesc[i].name%>><%= countryDesc[i].name%></option>
+
+                <% } %>
+
+
+              </select>
+            </div>
+            <input type="hidden" name="tomela" value="">
+            <input id="settingValue" onclick="alertas()" class="btn btn-lg btn-outline-light formulario boton" type="submit" name="companyButton" value="Sign Up">
+          </div>
+          <p id="par">Already have an account?</p>
+          <a id="aLogIn" href="#">Log In</a>
+
+        </form>
+      </div>
+
+
+
+    </div>
+    <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 signUp">
+
+      <img src="images/signature.png" alt="tracker" class="imagen">
+    </div>
+  </div>
+  <script src="jquery/sweetalert2.all.min.js" charset="utf-8"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="jquery/login.js" charset="utf-8"></script>
+  
+</body>
+
+</html>

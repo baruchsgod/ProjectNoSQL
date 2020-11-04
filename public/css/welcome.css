@@ -1,0 +1,58 @@
+body{
+  background-color: #3F3E42;
+}
+
+/********ID SELECTORS********/
+
+#uno{
+  background-color: #214252;
+  border-color: #214252;
+}
+
+#dos{
+
+  background-color: #f05454;
+  border-color: #f05454;
+}
+
+#tres{
+  background-color: #3797a4;
+  border-color: #3797a4;
+}
+
+/********CLASS SELECTORS********/
+
+.welcomeLogo{
+  text-align: center;
+}
+
+.welcome{
+  display: inline-block;
+  font-family: 'Bebas Neue', cursive;
+  color: #E8E7D5;
+  font-size: 60px;
+  bottom: 2px;
+  position: relative;
+  margin-right: 15px;
+}
+
+.plan{
+  text-align: center;
+  margin-bottom: 3.5%;
+
+}
+
+.plan a{
+  margin-left: 1%;
+}
+
+.plan button{
+  width: 20%;
+  height: 80px;
+}
+
+/********SPECIAL SELECTORS********/
+
+a:hover{
+  text-decoration: none;
+}

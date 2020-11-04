@@ -1,0 +1,42 @@
+<div id="third">
+  <h3 class="">Register your Company</h3>
+  <form class="form -group formulario" action="/" method="post">
+    <div class="container">
+      <input class="form-control formulario" type="text" name="cname" value="" placeholder="Enter your Company Name" required>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="inputGroupSelect01" name="jProfile">Country</label>
+        </div>
+        <select class="custom-select" id="inputGroupSelect01">
+          <option name="selectedCountry" selected>Choose...</option>
+          <% for(i=0;i<countryDesc.length;i++){ %>
+
+          <option value="i"><%= countryDesc[i].name%></option>
+
+          <% } %>
+
+
+        </select>
+      </div>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="inputGroupSelect01">Employee Headcount</label>
+        </div>
+        <select class="custom-select" id="inputGroupSelect01">
+          <option name="selectedHeadcount" selected>Choose...</option>
+          <option value="1">
+            < 100</option>
+          <option value="2">> 100 & <1000< /option>
+          <option value="3">> 1000</option>
+        </select>
+      </div>
+      <input class="form-control formulario" type="text" name="cStreet" value="" placeholder="Enter your the street address" required>
+      <input class="form-control formulario" type="text" name="cCity" value="" placeholder="Enter your Company City" required>
+      <input class="form-control formulario" type="text" name="cDept" value="" placeholder="Enter your Company address" required>
+      <input class="form-control formulario" type="text" name="cZip" value="" placeholder="Enter your Company Zip Code" required>
+      <input class="btn btn-lg btn-outline-light formulario boton" type="submit" name="companyButton" value="Create">
+    </div>
+    <p id="par">Already have an account?</p>
+    <a id="backLogin" href="/">Log In</a>
+  </form>
+</div>

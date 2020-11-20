@@ -24,6 +24,7 @@ mongoose.connect('mongodb://localhost:27017/projectFinalDB', {
 var countryArray = [];
 var companyArray = [];
 var success = "";
+var user = "";
 
 const jobSchema = new mongoose.Schema({
   codigo: {
@@ -66,7 +67,8 @@ const userSchema = new mongoose.Schema({
   },
   role: String,
   company: Object(),
-  category: Number
+  category: Number,
+  plan:""
 })
 
 const companySchema = new mongoose.Schema({
@@ -206,14 +208,22 @@ app.post("/", function(req, res) {
     var pass = stripTags(req.body.pass);
     pass = pass.replace(" ","");
 
-    console.log(email);
-    console.log(pass);
 
     User.findOne({"credentials.email":email,"credentials.password":pass},function(err,foundUser){
-      console.log(foundUser);
+
       if(!err){
         if(foundUser!=null){
-          res.redirect("/welcome");
+          User.findOne({plan:{$exists:true}},function(err,planUser){
+            if(!err){
+              if(planUser!=null){
+                res.render("home",{});
+              }else{
+                user = foundUser.id_user;
+                res.render("welcome",{user:user});
+              }
+            }
+          });
+
         }else{
           success = "Email or Password does not match";
           res.redirect("/")
@@ -228,6 +238,30 @@ app.post("/", function(req, res) {
 
 
 })
+
+app.post("/home",function(req,res){
+  if(req.body.planA==="Plan A"){
+    let id = "ObjectId("+"5f89011fac3d89544a34d41d"+")";
+    let user1 = req.body.user;
+    User.updateOne({id_user:user1},{$set:{plan:id}},function(err){
+      if(!err){
+        console.log("Plan was updated successfully");
+        res.render("home",{});
+      }else{
+        console.log(err);
+      }
+    });
+
+  }else if(req.body.planB==="Plan B"){
+    let id = "ObjectId("+"5f89013eac3d89544a34d41e"+")";
+    console.log(id);
+    console.log(req.body.planB);
+  }else{
+    let id = "ObjectId("+"5f89015dac3d89544a34d41f"+")";
+    console.log(id);
+    console.log(req.body.planC);
+  }
+});
 
 
 app.listen(process.env.PORT || "3000", function(req, res) {

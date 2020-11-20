@@ -74,6 +74,23 @@
   font-size: 20px;
 }
 
+.homeSticky{
+  width: 30%;
+  height: 45px;
+  position: relative;
+  top: 6px;
+}
+
+.nav-pad{
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.aligned{
+  width: 60%;
+}
+
+
 /* ESPECIAL SELECTORS */
 
 a:hover{
@@ -94,4 +111,8 @@ input[type="text"]{
 
 .container i{
   position: absolute;
+}
+
+.nav li a:hover{
+  color: #1abc9c !important;
 }

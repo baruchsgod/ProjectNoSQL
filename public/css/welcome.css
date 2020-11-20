@@ -51,7 +51,14 @@ body{
   height: 80px;
 }
 
+.welcome_plan{
+  width: 20%;
+  height: 70px;
+}
 /********SPECIAL SELECTORS********/
+.welcome_plan input:hover{
+  color:#fdcfdf;
+}
 
 a:hover{
   text-decoration: none;

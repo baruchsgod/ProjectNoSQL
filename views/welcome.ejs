@@ -17,21 +17,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
   </div>
   <br>
-  <div class="container plan">
-    <button id="uno" class="btn btn-lg btn-warning" type="submit" name="planA" >Plan A</button>
-    <a href="#" onclick="information(uno.innerText)" >More Information...</a>
-  </div>
-  <br>
-  <div class="container plan">
-    <button id="dos" class="btn btn-lg btn-warning" type="submit" name="planA">Plan B</button>
-    <a href="#" onclick="information(dos.innerText)">More Information...</a>
-  </div>
+  <form class="" action="/home" method="post">
+    <div class="container plan">
+      <input id="uno" class="btn btn-lg btn-warning welcome_plan" type="submit" name="planA" value="Plan A"  />
+      <input type="hidden" name="user" value=<%=user%>>
+      <a href="#" onclick="information(uno.innerText)" >More Information...</a>
+    </div>
+    <br>
+    <div class="container plan">
+      <input id="dos" class="btn btn-lg btn-warning welcome_plan" type="submit" name="planB" value="Plan B"/>
+      <a href="#" onclick="information(dos.innerText)">More Information...</a>
+    </div>
 
-  <br>
-  <div class="container plan">
-    <button id="tres" class="btn btn-lg btn-warning" type="submit" name="planA">Plan C</button>
-    <a href="#" onclick="information(tres.innerText)">More Information...</a>
-  </div>
+    <br>
+    <div class="container plan">
+      <input id="tres" class="btn btn-lg btn-warning welcome_plan" type="submit" name="planC" value="Plan C" />
+      <a href="#" onclick="information(tres.innerText)">More Information...</a>
+    </div>
+  </form>
+
 
   <script src="jquery/sweetalert2.all.min.js" charset="utf-8"></script>
   <script type="text/javascript">

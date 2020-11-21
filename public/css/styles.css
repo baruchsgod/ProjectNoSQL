@@ -142,6 +142,15 @@ body{
 .form_checklist{
   margin-top: 3%;
 }
+
+.row_margin{
+  padding-top: 3%;
+}
+
+.card-header{
+  background-color: #4DB33D;
+}
+
 /* ESPECIAL SELECTORS */
 
 a:hover{

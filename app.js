@@ -168,6 +168,29 @@ app.get("/compose/:username",function(req,res){
 
 });
 
+app.get("/checklist/:id",function(req,res){
+  let id_checklist = req.params.id;
+  var new_id_checklist = mongoose.Types.ObjectId(id_checklist);
+  console.log(new_id_checklist);
+  Task.findById(new_id_checklist,function(err, foundTask){
+    if(!err){
+      if(foundTask!=null){
+        let id = foundTask._id;
+        let name = foundTask.name;
+        let descrip = foundTask.description;
+        let user_checklist = foundTask.id_user;
+        let date_created = foundTask.date_creatinon;
+        let due_da = foundTask.due_date;
+        res.render("checklist",{id:id, name:name, descrip:descrip, user_checklist:user_checklist, date_created:date_created, due_da:due_da});
+      }else{
+        res.redirect("/");
+      }
+    }else{
+      console.log(err);
+    }
+  });
+});
+
 app.post("/", function(req, res) {
   if (req.body.companyButton === "Sign Up") {
     var email = stripTags(req.body.userEmailRegister);
@@ -245,8 +268,14 @@ app.post("/", function(req, res) {
           User.findOne({plan:{$exists:true}},function(err,planUser){
             if(!err){
               if(planUser!=null){
-                console.log(user);
-                res.render("home",{user:user, name:name, checklist:lists});
+                Task.find({id_user:user},function(err,foundTasks){
+                  if(!err){
+                    res.render("home",{user:user, name:name, checklist:foundTasks});
+                  }else{
+                    console.log(err);
+                  }
+                })
+                
               }else{
 
                 res.render("welcome",{user:user});
@@ -346,6 +375,8 @@ app.post("/compose",function(req,res){
     }
   })
 });
+
+
 
 
 app.listen(process.env.PORT || "3000", function(req, res) {

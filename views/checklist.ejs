@@ -1,9 +1,82 @@
-<p><%= id %></p>
-<p><%= name %></p>
-<p><%= descrip %></p>
-<p><%= user_checklist %></p>
-<p><%= date_created %></p>
-<p><%= due_da %></p>
+<%-include('partials/header1');-%>
 
 
+<div class="card text-center">
+  <div class="card-header header_color">
+    <%= name%>
+    <p class="first_para">Due Date: <%= due_da%></p>
+  </div>
+  <div class="card-body">
 
+    <% if(activity.length>0){ %>
+    <% activity.forEach(function(items){ %>
+    <input type="checkbox" name="inputCheck" value="">
+    <p><%= items %></p>
+    <% }) %>
+    <% }else{ %>
+    <p>No items found for this checklist</p>
+    <% } %>
+
+  </div>
+  <div class="card-footer text-muted">
+
+
+    <p class="add_comment">Comments(0)</p>
+    <button class="btn btn-lg btn-warning adding" type="submit" data-toggle="modal" data-target="#myModal" name="addList">
+      <p>+</p>
+    </button>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Add a task!</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+          </div>
+
+          <div class="modal-body">
+            <p>This items will be added into your checklist <%= name %></p>
+
+            <form class="profile_post" action="/checklist/add" method="POST" onsubmit="return notEmpty()">
+              <div class="form-group">
+                <textarea id="post_body" class="form-control" name="post_body"></textarea>
+                <input type="hidden" name="id_list" value=<%= id %>>
+              </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" name="submit_post" id="submit_post_button">Post</button>
+
+          </div>
+
+          </form>
+
+
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function notEmpty() {
+        var body = document.getElementById('post_body').value;
+        var len = body.length;
+
+        if (len != 0) {
+          return true;
+        } else {
+          return false;
+        }
+
+
+      }
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
+
+    </body>
+
+    </html>

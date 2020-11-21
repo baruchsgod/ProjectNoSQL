@@ -1,0 +1,49 @@
+body{
+  background-color: #E8E7D5;
+  background-image: -webkit-linear-gradient(60deg, #C1BEBC 50%, #E8E7D5 50%);
+
+}
+
+
+/*** CLASS SELECTORS ***/
+
+.header_color{
+  background-color: #aee6e6;
+}
+
+.contain_margin{
+  margin-top: 5%;
+}
+
+.first_para{
+  display: inline-block;
+  position: absolute;
+  right: 15px;
+}
+
+.adding{
+  border-radius: 100%;
+  text-align: center;
+  height: 50px;
+  width: 5%;
+  color: #FFF;
+  font-size: 45px;
+  padding-bottom: 6px;
+  margin-left: 85%;
+}
+
+.add_comment{
+  display: inline-block;
+}
+
+/*** SPECIAL SELECTORS ***/
+
+.adding p{
+  position: relative;
+  bottom: 22px;
+  right: 6px;
+}
+
+.adding p:hover{
+  color:#FFF;
+}

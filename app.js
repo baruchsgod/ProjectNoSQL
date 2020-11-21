@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const stripTags = require('striptags');
 const _ = require('lodash');
+const date = require(__dirname + "/date.js");
 
 
 const app = express();
@@ -96,7 +97,8 @@ const taskSchema = new mongoose.Schema({
   description:String,
   id_user:String,
   date_creatinon: { type: Date, default: Date.now },
-  due_date:Date
+  due_date:Date,
+  activities:[]
 })
 
 const Job = mongoose.model("Job", jobSchema);
@@ -176,12 +178,13 @@ app.get("/checklist/:id",function(req,res){
     if(!err){
       if(foundTask!=null){
         let id = foundTask._id;
-        let name = foundTask.name;
+        let name = _.startCase(_.toLower(foundTask.name));
         let descrip = foundTask.description;
         let user_checklist = foundTask.id_user;
         let date_created = foundTask.date_creatinon;
-        let due_da = foundTask.due_date;
-        res.render("checklist",{id:id, name:name, descrip:descrip, user_checklist:user_checklist, date_created:date_created, due_da:due_da});
+        let due_da = date.getDate(foundTask.due_date);
+        let activity = foundTask.activities;
+        res.render("checklist",{id:id, name:name, descrip:descrip, user_checklist:user_checklist, date_created:date_created, due_da:due_da, activity:activity});
       }else{
         res.redirect("/");
       }
@@ -275,7 +278,7 @@ app.post("/", function(req, res) {
                     console.log(err);
                   }
                 })
-                
+
               }else{
 
                 res.render("welcome",{user:user});
@@ -376,6 +379,12 @@ app.post("/compose",function(req,res){
   })
 });
 
+app.post("/checklist/add",function(req,res){
+  let task = req.body.id_list;
+  let body = req.body.post_body;
+  console.log(task);
+  console.log(body);
+})
 
 
 

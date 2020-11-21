@@ -1,0 +1,22 @@
+<%-include('partials/header');-%>
+
+<h1 class="form_checklist"><%= name%> please create a Checklist</h1>
+<form class="form_checklist" action="/compose" method="POST">
+    <div class="form-group">
+        <label >Sticky Name</label>
+        <input type="text" class="form-control" name="postTitle" autocomplete="off" required>
+      </div>
+      <div class="form-group">
+        <label >Description</label>
+        <textarea class="form-control" rows="2" name="postBody"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Due Date</label>
+        <input class="form-control" type="date" name="due_date" required>
+      </div>
+      <input type="hidden" name="nombre" value=<%= name%>>
+      <input type="hidden" name="user" value=<%=username%>>
+    <button class="btn btn-lg btn-info" type="submit">Create</button>
+</form>
+
+<%-include('partials/footer');-%>

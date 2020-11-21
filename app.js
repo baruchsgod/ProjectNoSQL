@@ -25,6 +25,8 @@ var countryArray = [];
 var companyArray = [];
 var success = "";
 var user = "";
+var name = "";
+var lists = [];
 
 const jobSchema = new mongoose.Schema({
   codigo: {
@@ -88,11 +90,21 @@ const companySchema = new mongoose.Schema({
   }]
 })
 
+const taskSchema = new mongoose.Schema({
+  id_task: Number,
+  name:String,
+  description:String,
+  id_user:String,
+  date_creatinon: { type: Date, default: Date.now },
+  due_date:Date
+})
+
 const Job = mongoose.model("Job", jobSchema);
 const Category = mongoose.model("Category", categorySchema);
 const Country = mongoose.model("Country", countrySchema);
 const User = mongoose.model("User", userSchema);
 const Company = mongoose.model("Company", companySchema);
+const Task = mongoose.model("Task", taskSchema);
 
 app.get("/", function(req, res) {
 
@@ -138,8 +150,23 @@ app.get("/welcome",function(req,res){
 })
 
 app.get("/home",function(req,res){
-  res.render("home",{});
+  res.render("home",{user:user, name:name, checklist:lists});
 })
+
+app.get("/compose/:username",function(req,res){
+  var path = req.params.username;
+  var fnames = "";
+  User.findOne({id_user:path},function(err,foundNames){
+    if(!err){
+      fnames = foundNames.name;
+
+      res.render("compose",{username:path, name: fnames});
+    }else{
+      console.log(err);
+    }
+  })
+
+});
 
 app.post("/", function(req, res) {
   if (req.body.companyButton === "Sign Up") {
@@ -213,12 +240,15 @@ app.post("/", function(req, res) {
 
       if(!err){
         if(foundUser!=null){
+          user = foundUser.id_user;
+          name = foundUser.name;
           User.findOne({plan:{$exists:true}},function(err,planUser){
             if(!err){
               if(planUser!=null){
-                res.render("home",{});
+                console.log(user);
+                res.render("home",{user:user, name:name, checklist:lists});
               }else{
-                user = foundUser.id_user;
+
                 res.render("welcome",{user:user});
               }
             }
@@ -246,7 +276,7 @@ app.post("/home",function(req,res){
     User.updateOne({id_user:user1},{$set:{plan:id}},function(err){
       if(!err){
         console.log("Plan was updated successfully");
-        res.render("home",{});
+        res.render("home",{user:user1, name:name, checklist:lists});
       }else{
         console.log(err);
       }
@@ -254,13 +284,67 @@ app.post("/home",function(req,res){
 
   }else if(req.body.planB==="Plan B"){
     let id = "ObjectId("+"5f89013eac3d89544a34d41e"+")";
-    console.log(id);
-    console.log(req.body.planB);
+    let user1 = req.body.user;
+    User.updateOne({id_user:user1},{$set:{plan:id}},function(err){
+      if(!err){
+        console.log("Plan was updated successfully");
+        res.render("home",{user:user1, name:name, checklist:lists});
+      }else{
+        console.log(err);
+      }
+    });
   }else{
     let id = "ObjectId("+"5f89015dac3d89544a34d41f"+")";
-    console.log(id);
-    console.log(req.body.planC);
+    let user1 = req.body.user;
+    User.updateOne({id_user:user1},{$set:{plan:id}},function(err){
+      if(!err){
+        console.log("Plan was updated successfully");
+        res.render("home",{user:user1, name:name, checklist:lists});
+      }else{
+        console.log(err);
+      }
+    });
   }
+});
+
+app.post("/compose",function(req,res){
+  let names = req.body.nombre;
+  let usernames = req.body.user;
+  let sticky_name = req.body.postTitle;
+  let sticky_description = req.body.postBody;
+  let due_date = req.body.due_date;
+
+  Task.find({},function(err,foundAll){
+    if(!err){
+      if(foundAll.length>0){
+        let id = foundAll.length+1;
+        let arr = [{id_task:id,name:sticky_name,description:sticky_description,id_user:usernames,due_date:due_date}];
+        Task.insertMany(arr,function(err){
+          if(!err){
+            Task.find({id_user:usernames},function(err,checklists){
+              if(!err){
+                if(checklists.length>0){
+                  lists = checklists;
+                  res.render("home",{user:usernames, name:names, checklist:lists});
+                }else{
+                  console.log("There isnt any checklist under your username");
+                  res.render("home",{user:usernames, name:names, checklist:lists});
+                }
+              }else{
+                console.log(err);
+              }
+            })
+          }else{
+            console.log(err);
+          }
+        });
+      }else{
+
+      }
+    }else{
+      console.log(err);
+    }
+  })
 });
 
 

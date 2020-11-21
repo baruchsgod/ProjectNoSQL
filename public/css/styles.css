@@ -1,3 +1,11 @@
+/*** TAG SELECTOR ***/
+
+body{
+  background-color: #E8E7D5;
+
+}
+
+
 /* ID SELECTOR */
 
 #par{
@@ -87,10 +95,53 @@
 }
 
 .aligned{
-  width: 60%;
+  width: 50%;
 }
 
+.align{
+  width: 50%;
+}
 
+.home_footer{
+  background-color: #4DB33D;
+  position: absolute;
+  width: 100%;
+  bottom: 1px;
+  min-height: 55px;
+  text-align: center;
+}
+
+.tag_footer{
+
+  margin: 10px auto 10px auto;
+}
+
+.new{
+  width: 9%;
+  height: 65px;
+  min-width: 8%;
+  min-height: 55px;
+  margin: 15px 30px;
+}
+
+.new_button{
+  font-family: 'Modak','cursive';
+  position: relative;
+  top: 7px;
+}
+
+.new_a{
+  margin: 15px auto;
+}
+
+.navbar-left{
+  width: 35%;
+  margin-left: 550px;
+}
+
+.form_checklist{
+  margin-top: 3%;
+}
 /* ESPECIAL SELECTORS */
 
 a:hover{
@@ -109,10 +160,18 @@ input[type="text"]{
   text-align: center;
 }
 
+.form-group input[type="text"]{
+  text-align: left;
+}
+
 .container i{
   position: absolute;
 }
 
 .nav li a:hover{
   color: #1abc9c !important;
+}
+
+.align input[type="search"]{
+  width: 75%;
 }

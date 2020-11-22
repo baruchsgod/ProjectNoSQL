@@ -11,13 +11,15 @@
   <% if(activity.length>0){ %>
 
   <% for(i=0;i<activity.length;i++){ %>
-    <form action="/checklist/delete" method="post">
-  <div class="card-body top_border">
-    <input type="checkbox" onChange="this.form.submit()" name="inputCheck" value=<%= id %>>
-    <input type="hidden" name="delete_item" value=<%= i %>>
-    <p class="item"><%= activity[i] %></p>
-  </div>
+  <form id="form<%= i %>" action="/checklist/delete" method="post">
+    <div class="card-body top_border">
+
+      <input type="checkbox" onClick="deletePost(this)" name="delete_item" value=<%= i %>>
+      <input type="hidden" name="input_check" value=<%= id %>>
+      <p class="item"><%= activity[i] %></p>
+    </div>
   </form>
+
   <% } %>
 
   <% }else{ %>
@@ -55,7 +57,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-warning" name="submit_post" id="submit_post_button">Post</button>
+            <button type="submit" class="btn btn-warning" name="submit_post" id="submit_post_button">Create</button>
 
           </div>
 
@@ -78,6 +80,23 @@
         }
 
 
+      }
+    </script>
+    <script>
+      function deletePost(post) {
+        var id = post.value;
+        var forms = "#form"+id;
+        var whole_form = $(forms);
+        bootbox.confirm("Are you sure you want to delete this task?", function(result) {
+
+          if (result) {
+
+            whole_form.submit();
+
+          } else {
+
+          }
+        })
       }
     </script>
 

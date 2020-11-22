@@ -408,17 +408,26 @@ app.post("/checklist/add",function(req,res){
 })
 
 app.post("/checklist/delete", function(req,res){
-  let id = req.body.inputCheck;
+  let id = req.body.input_check;
   let task = req.body.delete_item;
-  console.log(task);
-  // Task.findByIdAndRemove(id,{},function(err){
-  //   if(!err){
-  //
-  //   }else{
-  //     console.log(err);
-  //   }
-  // });
+  Task.findById(id,function(err,foundItems){
 
+    if(!err){
+
+        let task_delete = foundItems.activities[task];
+        console.log(task_delete);
+        Task.findByIdAndUpdate(id,{$pull:{activities:task_delete}},function(err){
+          if(!err){
+            res.redirect("/checklist/"+id);
+          }else{
+            console.log(err);
+          }
+        });
+
+    }else{
+      console.log(err);
+    }
+  })
 })
 
 

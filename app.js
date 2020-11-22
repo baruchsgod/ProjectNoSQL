@@ -151,8 +151,23 @@ app.get("/welcome",function(req,res){
   res.render("welcome",{});
 })
 
-app.get("/home",function(req,res){
-  res.render("home",{user:user, name:name, checklist:lists});
+app.get("/home/:user",function(req,res){
+  let user_checklist = req.params.user;
+  User.findOne({id_user:user_checklist},function(err,users){
+    if(!err){
+      let names = users.name;
+      Task.find({id_user:user_checklist},function(err,itemChecklists){
+        if(!err){
+          let list = itemChecklists;
+          res.render("home1",{user:user_checklist, name:names, checklist:list});
+        }else{
+          console.log(err);
+        }
+      })
+    }else{
+      console.log(err);
+    }
+  })
 })
 
 app.get("/compose/:username",function(req,res){
@@ -382,8 +397,28 @@ app.post("/compose",function(req,res){
 app.post("/checklist/add",function(req,res){
   let task = req.body.id_list;
   let body = req.body.post_body;
+
+  Task.findByIdAndUpdate(task, {$push:{activities:body}},function(err){
+    if(!err){
+      res.redirect("/checklist/"+task);
+    }else{
+      console.log(err);
+    }
+  })
+})
+
+app.post("/checklist/delete", function(req,res){
+  let id = req.body.inputCheck;
+  let task = req.body.delete_item;
   console.log(task);
-  console.log(body);
+  // Task.findByIdAndRemove(id,{},function(err){
+  //   if(!err){
+  //
+  //   }else{
+  //     console.log(err);
+  //   }
+  // });
+
 })
 
 

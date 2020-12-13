@@ -151,6 +151,12 @@ body{
   background-color: #4DB33D;
 }
 
+.inline_form{
+  display: inline-block;
+  position: absolute;
+  right: 20px;
+}
+
 /* ESPECIAL SELECTORS */
 
 a:hover{

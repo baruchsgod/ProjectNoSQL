@@ -101,12 +101,21 @@ const taskSchema = new mongoose.Schema({
   activities:[]
 })
 
+const commentSchema = new mongoose.Schema({
+  idComment:Number,
+  id_user:String,
+  body:String,
+  id_task:Object(),
+  fecha:{ type: Date, default: Date.now }
+})
+
 const Job = mongoose.model("Job", jobSchema);
 const Category = mongoose.model("Category", categorySchema);
 const Country = mongoose.model("Country", countrySchema);
 const User = mongoose.model("User", userSchema);
 const Company = mongoose.model("Company", companySchema);
 const Task = mongoose.model("Task", taskSchema);
+const Comment = mongoose.model("Comment", commentSchema);
 
 app.get("/", function(req, res) {
 
@@ -156,10 +165,11 @@ app.get("/home/:user",function(req,res){
   User.findOne({id_user:user_checklist},function(err,users){
     if(!err){
       let names = users.name;
+      let role = users.role;
       Task.find({id_user:user_checklist},function(err,itemChecklists){
         if(!err){
           let list = itemChecklists;
-          res.render("home1",{user:user_checklist, name:names, checklist:list});
+          res.render("home1",{user:user_checklist, name:names, role:role ,checklist:list});
         }else{
           console.log(err);
         }
@@ -199,7 +209,15 @@ app.get("/checklist/:id",function(req,res){
         let date_created = foundTask.date_creatinon;
         let due_da = date.getDate(foundTask.due_date);
         let activity = foundTask.activities;
-        res.render("checklist",{id:id, name:name, descrip:descrip, user_checklist:user_checklist, date_created:date_created, due_da:due_da, activity:activity});
+        Comment.find({id_task:new_id_checklist},function(err,foundComment){
+          if(!err){
+            let comment_list = foundComment;
+            res.render("checklist",{object_id:new_id_checklist,id:id, name:name, descrip:descrip, user_checklist:user_checklist, date_created:date_created, due_da:due_da, activity:activity,comments:comment_list});
+          }else{
+            console.log(err);
+          }
+        })
+
       }else{
         res.redirect("/");
       }
@@ -207,6 +225,11 @@ app.get("/checklist/:id",function(req,res){
       console.log(err);
     }
   });
+});
+
+app.get("/home/settings/:user", function(req,res){
+  let user = req.params.user;
+  res.render("setting", {user:user});
 });
 
 app.post("/", function(req, res) {
@@ -283,12 +306,13 @@ app.post("/", function(req, res) {
         if(foundUser!=null){
           user = foundUser.id_user;
           name = foundUser.name;
+          role = foundUser.role;
           User.findOne({plan:{$exists:true}},function(err,planUser){
             if(!err){
               if(planUser!=null){
                 Task.find({id_user:user},function(err,foundTasks){
                   if(!err){
-                    res.render("home",{user:user, name:name, checklist:foundTasks});
+                    res.render("home",{user:user, name:name, role:role ,checklist:foundTasks});
                   }else{
                     console.log(err);
                   }
@@ -430,6 +454,67 @@ app.post("/checklist/delete", function(req,res){
   })
 })
 
+app.post("/task/delete", function(req,res){
+    let id_task = req.body.desc_task;
+    let user_name = req.body.user_name;
+
+    Task.deleteOne({id_task:id_task},function(err){
+      if(!err){
+        res.redirect("/home/"+user_name);
+      }else{
+        console.log(err);
+      }
+    });
+
+});
+
+app.post("/comment/post",function(req,res){
+  var id_object = req.body.id_task_comment;
+  var user_task = req.body.username_task;
+  let comment_array = [];
+  var body = req.body.post_body;
+  Comment.find({},function(err, foundComments){
+    if(!err){
+      if(foundComments!=null){
+        let id_comment = foundComments.length+1;
+        let comment_array = [{
+          idComment:id_comment,
+          id_user:user_task,
+          body:body,
+          id_task: mongoose.Types.ObjectId(id_object),
+          fecha: new Date()
+        }];
+        Comment.insertMany(comment_array,function(err){
+          if(!err){
+            res.redirect("/checklist/"+id_object);
+          }else{
+            console.log(err);
+          }
+        });
+      }else{
+        let id_comment = 1;
+        let comment_array = [{
+          idComment:id_comment,
+          id_user:user_task,
+          body:body,
+          id_task: mongoose.Types.ObjectId(id_object),
+          fecha: new Date()
+        }];
+        Comment.insertMany(comment_array,function(err){
+          if(!err){
+            res.redirect("/checklist/"+id_object);
+          }else{
+            console.log(err);
+          }
+        });
+      }
+    }else{
+      console.log(err);
+    }
+
+  });
+
+});
 
 
 app.listen(process.env.PORT || "3000", function(req, res) {

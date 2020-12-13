@@ -45,7 +45,46 @@ body{
   border-top: 1px solid #e8e8e8;
   text-align: left;
 }
+
+.width_adjust{
+  width:83%;
+  margin-top: 10px;
+}
+
+.post_comment{
+  margin-top: 10px;
+  border-top: 1px solid #e8e8e8;
+}
+
+.comment_section{
+  cursor: pointer;
+}
+
+.null_comment{
+  text-align: center;
+  margin-top: 20px;
+}
+
+.actual_comment{
+  margin-top: 5px;
+  border-top: 2px solid #e8e8e8;
+  text-align: left;
+  margin-left: 20px;
+}
+
+.list_comments{
+  font-weight: bold;
+}
 /*** SPECIAL SELECTORS ***/
+
+.post_comment input{
+  width: 12%;
+  display: inline-block;
+  float: right;
+  position: relative;
+  bottom: 53px;
+  right: 25px;
+}
 
 .adding p{
   position: relative;

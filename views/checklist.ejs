@@ -29,11 +29,39 @@
 
   <div class="card-footer text-muted">
 
+    <div class="comment_section" onclick="toggle()">
+      <% if(comments!=null){ %>
+        <p class="add_comment">Comments(<%= comments.length %>)</p>
+      <% }else{ %>
+        <p class="add_comment">Comments(0)</p>
+      <% } %>
 
-    <p class="add_comment">Comments(0)</p>
-    <button class="btn btn-lg btn-warning adding" type="submit" data-toggle="modal" data-target="#myModal" name="addList">
-      <p>+</p>
-    </button>
+      <button class="btn btn-lg btn-warning adding" type="submit" data-toggle="modal" data-target="#myModal" name="addList">
+        <p>+</p>
+      </button>
+    </div>
+
+    <div class="post_comment" id="comment_toggle" style="display:none">
+      <form id="comment_form" action="/comment/post" name="postComment" method="POST">
+       <textarea class="form-control width_adjust" name="post_body"></textarea>
+       <input type="hidden" name="id_task_comment" value=<%= object_id %>>
+       <input type="hidden" name="username_task" value=<%= user_checklist%>>
+       <input class="btn btn-lg btn-info" type="submit" name="postComments" value="Post">
+       <div class="added_comments">
+         <% if(comments!=null){ %>
+           <% for(i=0;i<comments.length;i++){ %>
+             <div class="actual_comment">
+               <p class="list_comments"><%= comments[i].id_user %> is saying: </p>
+               <p><%= comments[i].body %></p>
+               <p><%= comments[i].fecha %></p>
+             </div>
+           <% } %>
+         <% }else{ %>
+           <p class="null_comment">No comments to show</p>
+         <% } %>
+       </div>
+     </form>
+    </div>
 
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
@@ -98,7 +126,22 @@
           }
         })
       }
+
+      function toggle(){
+
+        var post_id = document.getElementById("comment_toggle");
+        var target = $(event.target);
+        if(!target.is("button") && !target.is("p")){
+          if(post_id.style.display === "block"){
+            post_id.style.display = "none";
+          }else{
+            post_id.style.display = "block";
+          }
+        }
+
+      }
     </script>
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

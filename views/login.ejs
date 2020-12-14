@@ -55,10 +55,21 @@
               <div class="input-group-prepend">
                 <label class="input-group-text" for="inputGroupSelect01" name="jProfile">Select job description</label>
               </div>
-              <select name="selectedJob" class="custom-select" id="inputGroupSelect01">
+              <select name="selectedJob" class="custom-select" id="inputGroupSelect01" onblur="showManager(this)">
                 <option selected>Choose...</option>
                 <% for(i=0;i<jobDesc.length;i++){ %>
                 <option value=<%= jobDesc[i].name %>><%= jobDesc[i].name %></option>
+                <% } %>
+              </select>
+            </div>
+            <div class="input-group mb-3" id="manager_selection" >
+              <div class="input-group-prepend">
+                <label class="input-group-text" id="label_manager" for="inputGroupSelect01" name="jProfile">Select your Manager</label>
+              </div>
+              <select name="selectedManager" class="custom-select" id="inputGroupSelect01">
+                <option selected>Choose...</option>
+                <% for(i=0;i<managerDesc.length;i++){ %>
+                <option value=<%= managerDesc[i].id_user %>><%= managerDesc[i].name %></option>
                 <% } %>
               </select>
             </div>
@@ -94,10 +105,26 @@
       <img src="images/signature.png" alt="tracker" class="imagen">
     </div>
   </div>
+
+  <!-- <script>
+    function showManager(jobDescription){
+      var manager_toggle = document.getElementById("manager_selection");
+
+      if(jobDescription.value === "Manager"){
+        if(manager_toggle.style.display==="flex"){
+            manager_toggle.style.display==="none";
+            document.getElementById("label_manager").style.display === "none";
+        }
+      }else{
+
+      }
+    }
+  </script> -->
+
   <script src="jquery/sweetalert2.all.min.js" charset="utf-8"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="jquery/login.js" charset="utf-8"></script>
-  
+
 </body>
 
 </html>

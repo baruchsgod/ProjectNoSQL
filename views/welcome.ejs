@@ -26,12 +26,14 @@
     <br>
     <div class="container plan">
       <input id="dos" class="btn btn-lg btn-warning welcome_plan" type="submit" name="planB" value="Plan B"/>
+      <input type="hidden" name="userB" value=<%=user%>>
       <a href="#" onclick="information(dos.innerText)">More Information...</a>
     </div>
 
     <br>
     <div class="container plan">
       <input id="tres" class="btn btn-lg btn-warning welcome_plan" type="submit" name="planC" value="Plan C" />
+      <input type="hidden" name="userC" value=<%=user%>>
       <a href="#" onclick="information(tres.innerText)">More Information...</a>
     </div>
   </form>

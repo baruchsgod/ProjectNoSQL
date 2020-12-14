@@ -24,6 +24,7 @@ mongoose.connect('mongodb://localhost:27017/projectFinalDB', {
 
 var countryArray = [];
 var companyArray = [];
+var managerArray = [];
 var success = "";
 var user = "";
 var name = "";
@@ -150,12 +151,23 @@ app.get("/", function(req, res) {
     }
   })
 
+  User.find({role:"Manager"}, function(err, managers){
+    if (!err) {
+      if (managers.length > 0) {
+        managerArray = managers;
+      }
+    } else {
+      console.log(err);
+    }
+  })
+
   Job.find({}, function(err, foundItems) {
     if (!err) {
       res.render("login", {
         jobDesc: foundItems,
         countryDesc: countryArray,
         companyDesc: companyArray,
+        managerDesc:managerArray,
         success:success
       });
       success="";
@@ -349,6 +361,8 @@ app.post("/", function(req, res) {
 
     var userCountry = req.body.countrySelected;
 
+    var userManagers = req.body.selectedManager;
+
     var userArray = [{
       id_user: idUser,
       name: namePost,
@@ -360,9 +374,30 @@ app.post("/", function(req, res) {
       role: userProfile
     }];
 
+    var object_user = {
+      id_users: idUser,
+    names: namePost,
+    lnames: lnamePost,
+    credential: {
+      passwords: passPost,
+      emails: email
+    },
+    roles: userProfile};
+
     User.insertMany(userArray,function(err){
       if(!err){
         console.log("Information uploaded succesfully");
+        if(!_.isEmpty(userManagers)){
+          console.log("este es el manager id"+ userManagers);
+          console.log(object_user);
+          User.findOneAndUpdate({id_user:userManagers}, {$push :{team:object_user}},function(err){
+            if(!err){
+              console.log("push of array item done");
+              }else{
+                console.log(err);
+              }
+          });
+        }
 
         success = "Welcome to Sticky, Please Log In";
         res.redirect("/");
@@ -387,9 +422,12 @@ app.post("/", function(req, res) {
           user = foundUser.id_user;
           name = foundUser.name;
           role = foundUser.role;
-          User.findOne({plan:{$exists:true}},function(err,planUser){
+          User.findOne({$and:[{plan:{$exists:true}},{id_user:user}]},function(err,planUser){
             if(!err){
-              if(planUser!=null){
+              if(_.isEmpty(planUser)){
+
+                res.render("welcome",{user:user});
+              }else{
                 Task.find({id_user:user},function(err,foundTasks){
                   if(!err){
                     // res.render("home",{user:user, name:name, role:role ,checklist:foundTasks});
@@ -399,9 +437,6 @@ app.post("/", function(req, res) {
                   }
                 })
 
-              }else{
-
-                res.render("welcome",{user:user});
               }
             }
           });
@@ -425,37 +460,63 @@ app.post("/home",function(req,res){
   if(req.body.planA==="Plan A"){
     let id = "ObjectId("+"5f89011fac3d89544a34d41d"+")";
     let user1 = req.body.user;
-    User.updateOne({id_user:user1},{$set:{plan:id}},function(err){
+    User.findOne({id_user:user1}, function(err, foundUser){
       if(!err){
-        console.log("Plan was updated successfully");
-        res.render("home",{user:user1, name:name, checklist:lists});
+        var roleHome1= foundUser.role;
+        User.updateOne({id_user:user1},{$set:{plan:id}},function(err){
+          if(!err){
+            console.log("Plan was updated successfully");
+            res.render("home1",{user:user1, name:name,role:roleHome1 ,checklist:lists});
+          }else{
+            console.log(err);
+          }
+        });
       }else{
         console.log(err);
       }
     });
 
+
   }else if(req.body.planB==="Plan B"){
     let id = "ObjectId("+"5f89013eac3d89544a34d41e"+")";
-    let user1 = req.body.user;
-    User.updateOne({id_user:user1},{$set:{plan:id}},function(err){
+    let user1 = req.body.userB;
+
+    console.log("Estoy pasando por B y este es el user: "+user1);
+    User.findOne({id_user:user1}, function(err, foundUser){
       if(!err){
-        console.log("Plan was updated successfully");
-        res.render("home",{user:user1, name:name, checklist:lists});
+        var roleHome1= foundUser.role;
+        User.updateOne({id_user:user1},{$set:{plan:id}},function(err){
+          if(!err){
+            console.log("Plan was updated successfully");
+            res.render("home1",{user:user1, name:name, role:roleHome1 ,checklist:lists});
+          }else{
+            console.log(err);
+          }
+        });
       }else{
         console.log(err);
       }
     });
+
   }else{
     let id = "ObjectId("+"5f89015dac3d89544a34d41f"+")";
-    let user1 = req.body.user;
-    User.updateOne({id_user:user1},{$set:{plan:id}},function(err){
+    let user1 = req.body.userC;
+    User.findOne({id_user:user1}, function(err, foundUser){
       if(!err){
-        console.log("Plan was updated successfully");
-        res.render("home",{user:user1, name:name, checklist:lists});
+        var roleHome1= foundUser.role;
+        User.updateOne({id_user:user1},{$set:{plan:id}},function(err){
+          if(!err){
+            console.log("Plan was updated successfully");
+            res.render("home1",{user:user1, name:name, role:roleHome1 ,checklist:lists});
+          }else{
+            console.log(err);
+          }
+        });
       }else{
         console.log(err);
       }
     });
+
   }
 });
 
@@ -477,10 +538,11 @@ app.post("/compose",function(req,res){
               if(!err){
                 if(checklists.length>0){
                   lists = checklists;
-                  res.render("home",{user:usernames, name:names, checklist:lists});
+                  let role = checklists.role;
+                  res.render("home1",{user:usernames, name:names,role:role, checklist:lists});
                 }else{
                   console.log("There isnt any checklist under your username");
-                  res.render("home",{user:usernames, name:names, checklist:lists});
+                  res.render("home1",{user:usernames, name:names, role:"Supervisor" ,checklist:lists});
                 }
               }else{
                 console.log(err);

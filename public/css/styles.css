@@ -157,6 +157,15 @@ body{
   right: 20px;
 }
 
+.btnMargin{
+  margin-top: 15px;
+}
+
+.employee{
+  text-align: center;
+  margin-top: 2%;
+}
+
 /* ESPECIAL SELECTORS */
 
 a:hover{

@@ -71,7 +71,17 @@ const userSchema = new mongoose.Schema({
   role: String,
   company: Object(),
   category: Number,
-  plan:""
+  plan:"",
+  team:[{
+    id_users:String,
+    names:String,
+    lnames:String,
+    credential:{
+      passwords: String,
+      emails: String
+    },
+    roles:String
+  }]
 })
 
 const companySchema = new mongoose.Schema({
@@ -180,6 +190,43 @@ app.get("/home/:user",function(req,res){
   })
 })
 
+app.get("/home/:manager/:employee/:name",function(req,res){
+  let user_manager = req.params.manager;
+  let user_employee = req.params.employee;
+  let name_manager = req.params.name;
+  User.findOne({id_user:user_employee},function(err,users){
+    if(!err){
+      let names = users.name;
+      Task.find({id_user:user_employee},function(err,itemChecklists){
+        if(!err){
+          let list = itemChecklists;
+          console.log(list);
+          res.render("home",{user:user_manager, name:name_manager, name_emp: names ,role:"Manager" ,checklist:list});
+        }else{
+          console.log(err);
+        }
+      })
+    }else{
+      console.log(err);
+    }
+  })
+})
+
+app.get("/home/reports/:user", function(req, res){
+  let user = req.params.user;
+  User.findOne({id_user:user}, function(err, userFound){
+    if(!err){
+      let name = userFound.name;
+      let role = userFound.role;
+      let team = userFound.team;
+
+      res.render("report",{name:name, user:user, role:role, employee_list:team});
+    }else{
+      console.log(err);
+    }
+  });
+});
+
 app.get("/compose/:username",function(req,res){
   var path = req.params.username;
   var fnames = "";
@@ -213,6 +260,39 @@ app.get("/checklist/:id",function(req,res){
           if(!err){
             let comment_list = foundComment;
             res.render("checklist",{object_id:new_id_checklist,id:id, name:name, descrip:descrip, user_checklist:user_checklist, date_created:date_created, due_da:due_da, activity:activity,comments:comment_list});
+          }else{
+            console.log(err);
+          }
+        })
+
+      }else{
+        res.redirect("/");
+      }
+    }else{
+      console.log(err);
+    }
+  });
+});
+
+app.get("/checklist/:id/:user",function(req,res){
+  let id_checklist = req.params.id;
+  let user_manager = req.params.user;
+
+  var new_id_checklist = mongoose.Types.ObjectId(id_checklist);
+  Task.findById(new_id_checklist,function(err, foundTask){
+    if(!err){
+      if(foundTask!=null){
+        let id = foundTask._id;
+        let name = _.startCase(_.toLower(foundTask.name));
+        let descrip = foundTask.description;
+        let user_checklist = foundTask.id_user;
+        let date_created = foundTask.date_creatinon;
+        let due_da = date.getDate(foundTask.due_date);
+        let activity = foundTask.activities;
+        Comment.find({id_task:new_id_checklist},function(err,foundComment){
+          if(!err){
+            let comment_list = foundComment;
+            res.render("checklist_manager",{object_id:new_id_checklist,id:id, name:name, descrip:descrip, user_checklist:user_manager, date_created:date_created, due_da:due_da, activity:activity,comments:comment_list});
           }else{
             console.log(err);
           }
@@ -312,7 +392,8 @@ app.post("/", function(req, res) {
               if(planUser!=null){
                 Task.find({id_user:user},function(err,foundTasks){
                   if(!err){
-                    res.render("home",{user:user, name:name, role:role ,checklist:foundTasks});
+                    // res.render("home",{user:user, name:name, role:role ,checklist:foundTasks});
+                    res.redirect("/home/"+user);
                   }else{
                     console.log(err);
                   }
@@ -422,9 +503,17 @@ app.post("/checklist/add",function(req,res){
   let task = req.body.id_list;
   let body = req.body.post_body;
 
+  let manager = req.body.user_manager;
+  let object = req.body.object_id;
+
   Task.findByIdAndUpdate(task, {$push:{activities:body}},function(err){
     if(!err){
-      res.redirect("/checklist/"+task);
+      if(req.body.submit_post === "Manager"){
+        res.redirect("/checklist/"+object+"/"+manager);
+      }else{
+        res.redirect("/checklist/"+task);
+      }
+
     }else{
       console.log(err);
     }
@@ -486,7 +575,12 @@ app.post("/comment/post",function(req,res){
         }];
         Comment.insertMany(comment_array,function(err){
           if(!err){
-            res.redirect("/checklist/"+id_object);
+            if(req.body.postComments === "Add"){
+              res.redirect("/checklist/"+id_object+"/"+user_task);
+            }else{
+              res.redirect("/checklist/"+id_object);
+            }
+
           }else{
             console.log(err);
           }
@@ -502,7 +596,11 @@ app.post("/comment/post",function(req,res){
         }];
         Comment.insertMany(comment_array,function(err){
           if(!err){
-            res.redirect("/checklist/"+id_object);
+            if(req.body.postComments === "Add"){
+              res.redirect("/checklist/"+id_object+"/"+user_task);
+            }else{
+              res.redirect("/checklist/"+id_object);
+            }
           }else{
             console.log(err);
           }
@@ -513,6 +611,15 @@ app.post("/comment/post",function(req,res){
     }
 
   });
+
+});
+
+app.post("/home/checklist", function(req,res){
+  let employee = req.body.employeeSelected;
+  let user = req.body.txtUser;
+  let role = req.body.txtRole;
+  let name = req.body.txtName;
+  res.redirect("/home/"+user+"/"+employee+"/"+name);
 
 });
 

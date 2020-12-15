@@ -21,32 +21,30 @@
     <div class="container plan">
       <input id="uno" class="btn btn-lg btn-warning welcome_plan" type="submit" name="planA" value="Plan A"  />
       <input type="hidden" name="user" value=<%=user%>>
-      <a href="#" onclick="information(uno.innerText)" >More Information...</a>
+      <a href="#" onclick="information()" value="Plan A">More Information...</a>
     </div>
     <br>
     <div class="container plan">
       <input id="dos" class="btn btn-lg btn-warning welcome_plan" type="submit" name="planB" value="Plan B"/>
       <input type="hidden" name="userB" value=<%=user%>>
-      <a href="#" onclick="information(dos.innerText)">More Information...</a>
+      <a href="#" onclick="planB()" value="Plan B">More Information...</a>
     </div>
 
     <br>
     <div class="container plan">
       <input id="tres" class="btn btn-lg btn-warning welcome_plan" type="submit" name="planC" value="Plan C" />
       <input type="hidden" name="userC" value=<%=user%>>
-      <a href="#" onclick="information(tres.innerText)">More Information...</a>
+      <a href="#" onclick="planC()" value="Plan C">More Information...</a>
     </div>
   </form>
 
 
-  <script src="jquery/sweetalert2.all.min.js" charset="utf-8"></script>
-  <script type="text/javascript">
-    function information(plan) {
 
-      if(plan==="Plan A"){
+  <script>
+    function information() {
         Swal.fire({
           title: 'Plan A',
-          text: 'Unlimited number of checklists for creation, 3 types of reports, unlimited comments',
+          text: 'Max 5 stickies for creation, unlimited comments',
           textColor:'#fff',
           imageUrl: 'images/sticky.png',
           imageWidth: 250,
@@ -54,30 +52,37 @@
           imageAlt: 'Custom image',
           background:'#214252',
         })
-      }else if (plan==="Plan B") {
-        Swal.fire({
-          title: 'Plan B',
-          text: 'Max 10 checklists for creation, 2 types of reports, max 10 comments per checklist',
-          imageUrl: 'images/sticky.png',
-          imageWidth: 250,
-          imageHeight: 100,
-          imageAlt: 'Custom image',
-          background:'#f05454',
-        })
-      }else{
-        Swal.fire({
-          title: 'Plan C',
-          text: 'Max 5 checklists for creation, 1 type of report, max 5 comments per checklist',
-          imageUrl: 'images/sticky.png',
-          imageWidth: 250,
-          imageHeight: 100,
-          imageAlt: 'Custom image',
-          background:'#3797a4',
-        })
-      }
 
     }
+
+    function planB(){
+      Swal.fire({
+        title: 'Plan B',
+        text: 'Max 3 stickies for creation, unlimited comments',
+        imageUrl: 'images/sticky.png',
+        imageWidth: 250,
+        imageHeight: 100,
+        imageAlt: 'Custom image',
+        background:'#f05454',
+      })
+    }
+
+    function planC(){
+      Swal.fire({
+        title: 'Plan C',
+        text: 'Max 2 stickies for creation, unlimited comments',
+        imageUrl: 'images/sticky.png',
+        imageWidth: 250,
+        imageHeight: 100,
+        imageAlt: 'Custom image',
+        background:'#3797a4',
+      })
+    }
   </script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="jquery/sweetalert2.all.min.js" charset="utf-8"></script>
 </body>
 
 </html>

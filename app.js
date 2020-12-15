@@ -72,7 +72,7 @@ const userSchema = new mongoose.Schema({
   role: String,
   company: Object(),
   category: Number,
-  plan:"",
+  plan:Object(),
   team:[{
     id_users:String,
     names:String,
@@ -120,6 +120,14 @@ const commentSchema = new mongoose.Schema({
   fecha:{ type: Date, default: Date.now }
 })
 
+const planSchema = new mongoose.Schema({
+  codigo:Number,
+  category:String,
+  description:String,
+  price:Number,
+  quantity:Number
+})
+
 const Job = mongoose.model("Job", jobSchema);
 const Category = mongoose.model("Category", categorySchema);
 const Country = mongoose.model("Country", countrySchema);
@@ -127,6 +135,7 @@ const User = mongoose.model("User", userSchema);
 const Company = mongoose.model("Company", companySchema);
 const Task = mongoose.model("Task", taskSchema);
 const Comment = mongoose.model("Comment", commentSchema);
+const Plan = mongoose.model("Plan", planSchema);
 
 app.get("/", function(req, res) {
 
@@ -187,11 +196,13 @@ app.get("/home/:user",function(req,res){
   User.findOne({id_user:user_checklist},function(err,users){
     if(!err){
       let names = users.name;
-      let role = users.role;
+      let roleUser = users.role;
+      console.log(users);
+      console.log("this is yuval role: "+roleUser);
       Task.find({id_user:user_checklist},function(err,itemChecklists){
         if(!err){
           let list = itemChecklists;
-          res.render("home1",{user:user_checklist, name:names, role:role ,checklist:list});
+          res.render("home1",{user:user_checklist, name:names, role:roleUser ,checklist:list});
         }else{
           console.log(err);
         }
@@ -239,6 +250,21 @@ app.get("/home/reports/:user", function(req, res){
   });
 });
 
+app.get("/capacity/:user", function(req,res){
+  let user_capacity = req.params.user;
+  var fnames = "";
+  User.findOne({id_user:user_capacity},function(err,foundNames){
+    if(!err){
+      fnames = foundNames.name;
+      role = foundNames.role;
+      res.render("message",{username:user_capacity,role:role ,name: fnames});
+    }else{
+      console.log(err);
+    }
+  })
+
+});
+
 app.get("/compose/:username",function(req,res){
   var path = req.params.username;
   var fnames = "";
@@ -253,6 +279,27 @@ app.get("/compose/:username",function(req,res){
   })
 
 });
+
+app.get("/capacity1/:user", function(req,res){
+  let username = req.params.user;
+  User.findOne({id_user:username},function(err,foundNames){
+    if(!err){
+      let fnames = foundNames.name;
+      let role = foundNames.role;
+      Task.find({id_user:username}, function(err, foundList){
+        if(!err){
+          let lists = foundList;
+          res.render("capacity", {user:username, name:fnames, role:role, checklist: lists});
+        }else{
+          console.log(err);
+        }
+      })
+
+    }else{
+      console.log(err);
+    }
+  })
+})
 
 app.get("/checklist/:id",function(req,res){
   let id_checklist = req.params.id;
@@ -466,7 +513,7 @@ app.post("/home",function(req,res){
         User.updateOne({id_user:user1},{$set:{plan:id}},function(err){
           if(!err){
             console.log("Plan was updated successfully");
-            res.render("home1",{user:user1, name:name,role:roleHome1 ,checklist:lists});
+            res.redirect("/home/"+user1);
           }else{
             console.log(err);
           }
@@ -488,7 +535,8 @@ app.post("/home",function(req,res){
         User.updateOne({id_user:user1},{$set:{plan:id}},function(err){
           if(!err){
             console.log("Plan was updated successfully");
-            res.render("home1",{user:user1, name:name, role:roleHome1 ,checklist:lists});
+            // res.render("home1",{user:user1, name:name, role:roleHome1 ,checklist:lists});
+            res.redirect("/home/"+user1);
           }else{
             console.log(err);
           }
@@ -507,7 +555,7 @@ app.post("/home",function(req,res){
         User.updateOne({id_user:user1},{$set:{plan:id}},function(err){
           if(!err){
             console.log("Plan was updated successfully");
-            res.render("home1",{user:user1, name:name, role:roleHome1 ,checklist:lists});
+            res.redirect("/home/"+user1);
           }else{
             console.log(err);
           }
@@ -532,28 +580,74 @@ app.post("/compose",function(req,res){
       if(foundAll.length>0){
         let id = foundAll.length+1;
         let arr = [{id_task:id,name:sticky_name,description:sticky_description,id_user:usernames,due_date:due_date}];
-        Task.insertMany(arr,function(err){
-          if(!err){
-            Task.find({id_user:usernames},function(err,checklists){
+
+        User.findOne({id_user:usernames}, function(err, foundCompose){
+            if(!err){
+              let plan = foundCompose.plan;
+              let role = foundCompose.role;
+              plan = _.trimStart(plan, 'ObjectId(');
+              plan = _.trimEnd(plan, ')');
+              Task.find({id_user:usernames},function(err,checklists){
               if(!err){
                 if(checklists.length>0){
                   lists = checklists;
-                  let role = checklists.role;
-                  res.render("home1",{user:usernames, name:names,role:role, checklist:lists});
+                  let plan_quantity = checklists.length;
+                  console.log("Este es el plan quantity "+plan_quantity);
+                  Plan.findById(plan, function(err, foundPlan){
+                        if(!err){
+                          console.log("Esta es la capacidad "+foundPlan.quantity);
+                          if(plan_quantity < foundPlan.quantity ){
+                            Task.insertMany(arr,function(err){
+                                if(!err){
+                                  Task.find({id_user:usernames}, function(err, userChecklist){
+                                    if(!err){
+                                      let lists = userChecklist;
+                                      res.render("home1",{user:usernames, name:names, role:"Supervisor" ,checklist:lists});
+                                    }else{
+                                      console.log(err);
+                                    }
+                                  });
+                                }else{
+                                  console.log(err);
+                                }
+                              });
+
+                          }else{
+                            res.render("capacity", {user:usernames, name:names,role:role, checklist:lists});
+                          }
+                        }else{
+                          console.log(err);
+                        }
+                      });
+
                 }else{
-                  console.log("There isnt any checklist under your username");
-                  res.render("home1",{user:usernames, name:names, role:"Supervisor" ,checklist:lists});
+                  Task.insertMany(arr, function(err){
+                    if(!err){
+                      Task.find({id_user:usernames}, function(err, userChecklist){
+                        if(!err){
+                          let lists = userChecklist;
+                          res.render("home1",{user:usernames, name:names, role:"Supervisor" ,checklist:lists});
+                        }else{
+                          console.log(err);
+                        }
+                      });
+
+                    }else{
+                      console.log(err);
+                    }
+                  })
+
                 }
               }else{
                 console.log(err);
               }
             })
-          }else{
-            console.log(err);
-          }
-        });
+            }else{
+              console.log(err);
+            }
+          })
       }else{
-
+        console.log("There are no tasks");
       }
     }else{
       console.log(err);

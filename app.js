@@ -333,6 +333,20 @@ app.get("/checklist/:id",function(req,res){
   });
 });
 
+app.get("/setting/:selector/:user", function(req, res){
+  let selector = req.params.selector;
+  let user = req.params.user;
+
+  User.findOne({id_user:user}, function(err, foundUser){
+    if(!err){
+
+    }else{
+      
+    }
+  });
+
+});
+
 app.get("/checklist/:id/:user",function(req,res){
   let id_checklist = req.params.id;
   let user_manager = req.params.user;
@@ -368,7 +382,16 @@ app.get("/checklist/:id/:user",function(req,res){
 
 app.get("/home/settings/:user", function(req,res){
   let user = req.params.user;
-  res.render("setting", {user:user});
+  User.findOne({id_user:user}, function(err, foundUser){
+    if(!err){
+      let role= foundUser.role;
+      let name = foundUser.name;
+      res.render("setting", {user:user, role:role, name:name});
+    }else{
+
+    }
+  });
+
 });
 
 app.post("/", function(req, res) {

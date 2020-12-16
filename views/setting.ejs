@@ -31,7 +31,7 @@
 
         <% if(role ==="Admin"){ %>
           <li class="nav-item active">
-            <a class="nav-link" href="#"><%=user%> <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="#"><%=name%> <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="">Home</a>
@@ -83,8 +83,10 @@
           </div>
           <div class="card-body">
             <h5 class="card-title">Description</h5>
-            <p class="card-text">Click this option to add a new company</p>
-            <a href="#" ><button class="btn btn-lg btn-warning fa fa-building"></button></i></a>
+            <p class="card-text">Click this option to manipulate the company table</p>
+              <a href="/setting/company/<%= user %>" ><button class="btn btn-lg btn-warning fa fa-building"></button></i></a>
+              <a href="#" ><button class="btn btn-lg btn-info fa fa-edit"></button></i></a>
+              <a href="#" ><button class="btn btn-lg btn-danger fa fa-trash"></button></i></a>
           </div>
         </div>
       </div>
@@ -95,8 +97,10 @@
           </div>
           <div class="card-body">
             <h5 class="card-title">Description</h5>
-            <p class="card-text">Click this option to add a new continent</p>
-            <a href="#" ><button class="btn btn-lg btn-warning fa fa-globe-americas"></button></i></a>
+            <p class="card-text">Click this option to manipulate the continent table</p>
+            <a href="/setting/continent/<%= user %>" ><button class="btn btn-lg btn-warning fa fa-globe"></button></i></a>
+            <a href="#" ><button class="btn btn-lg btn-info fa fa-edit"></button></i></a>
+            <a href="#" ><button class="btn btn-lg btn-danger fa fa-trash"></button></i></a>
           </div>
         </div>
       </div>
@@ -107,8 +111,10 @@
           </div>
           <div class="card-body">
             <h5 class="card-title">Description</h5>
-            <p class="card-text">Click this option to add a new country</p>
-            <a href="#" ><button class="btn btn-lg btn-warning fa fa-globe-globe"></button></i></a>
+            <p class="card-text">Click this option to manipulate the country table</p>
+            <a href="/setting/country/<%= user %>" ><button class="btn btn-lg btn-warning fa fa-flag"></button></i></a>
+            <a href="#" ><button class="btn btn-lg btn-info fa fa-edit"></button></i></a>
+            <a href="#" ><button class="btn btn-lg btn-danger fa fa-trash"></button></i></a>
           </div>
         </div>
       </div>
@@ -121,8 +127,10 @@
           </div>
           <div class="card-body">
             <h5 class="card-title">Description</h5>
-            <p class="card-text">Click this option to add a new plan</p>
-            <a href="#" ><button class="btn btn-lg btn-warning fa fa-shopping-bag"></button></i></a>
+            <p class="card-text">Click this option to manipulate the plan table</p>
+            <a href="/setting/plan/<%= user %>" ><button class="btn btn-lg btn-warning fa fa-shopping-bag"></button></i></a>
+            <a href="#" ><button class="btn btn-lg btn-info fa fa-edit"></button></i></a>
+            <a href="#" ><button class="btn btn-lg btn-danger fa fa-trash"></button></i></a>
           </div>
         </div>
       </div>

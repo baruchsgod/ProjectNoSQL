@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Home Sticky</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Modak&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <link rel="stylesheet" href="../../../css/styles.css">
+  <script src="https://use.fontawesome.com/f58802a848.js"></script>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand nav-pad" href="#">
+      <img src="../../images/sticky.png" alt="sticky" class="homeSticky">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+
+
+      <ul class="nav navbar-nav justify-content-end position-nav">
+
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Admin <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/home/<%= user %>">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Reports</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/home/settings/<%= user %>">Settings</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/" tabindex="-1" aria-disabled="true">LogOut</a>
+        </li>
+      </ul>
+  </nav>
+
+    <div class="container">
+      <div class="form-group">
+        <label>Select the User</label>
+        <select name="selectedUser" class="custom-select" id="inputGroupSelect04" onblur="selectedUser()">
+          <option selected>Choose...</option>
+          <% for(i=0;i<users.length;i++){ %>
+          <option value=<%= users[i].id_user %>><%= users[i].id_user %></option>
+            <% } %>
+        </select>
+      </div>
+      <h1 class="form_checklist"> Modify the User</h1>
+      <form class="form_checklist" action="/modify/collection" method="POST">
+        <div class="form-group">
+          <label>Name</label>
+          <input id="nameUser" type="text" class="form-control" name="nameUser" autocomplete="off" required>
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input id="lastname" type="text" class="form-control" name="lastname" autocomplete="off" required>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input id="emailUser" type="text" class="form-control" name="emailUser" autocomplete="off" required>
+        </div>
+        <div class="form-group">
+          <label>Select the company</label>
+          <select name="selectedCompany" class="custom-select" id="inputGroupSelect05" >
+            <option selected>Choose...</option>
+            <% for(i=0;i<companies.length;i++){ %>
+            <option value=<%= companies[i].id_company %>><%= companies[i].name %></option>
+              <% } %>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Select the Plan</label>
+          <select name="selectedPlan" class="custom-select" id="inputGroupSelect06">
+            <option selected>Choose...</option>
+            <% for(i=0;i<plans.length;i++){ %>
+            <option value=<%= plans[i].codigo %>><%= plans[i].category %></option>
+              <% } %>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Select the User</label>
+          <select name="selectedRole" class="custom-select" id="inputGroupSelect07">
+            <option selected>Choose...</option>
+            <option value="1">Manager</option>
+            <option value="2">Supervisor</option>
+          </select>
+        </div>
+        <input id="passUser" type="hidden" name="txtPass" value="">
+        <input id="selected_user" type="hidden" name="selected_user" value="">
+        <input type="hidden" name="selector" value=<%= selector%>>
+        <input type="hidden" name="user" value=<%=user%>>
+        <button class="btn btn-lg btn-info" type="submit">Create</button>
+      </form>
+    </div>
+
+
+  <script>
+
+
+    function selectedUser(){
+
+        var user = document.getElementById('inputGroupSelect04');
+        var selected_user = user.options[user.selectedIndex].value;
+        var user_array = <%- JSON.stringify(users)%>;
+        var company_array = <%- JSON.stringify(companies)%>
+        var plan_array= <%- JSON.stringify(plans)%>
+        for(i=0; i< user_array.length; i++){
+
+          if(user_array[i].id_user == selected_user){
+
+            document.getElementById('passUser').value = user_array[i].credentials.password;
+            document.getElementById('selected_user').value = selected_user;
+            document.getElementById('nameUser').value = user_array[i].name;
+            document.getElementById('lastname').value = user_array[i].lname;
+            document.getElementById('emailUser').value = user_array[i].credentials.email;
+            for(j=0; j < company_array.length; j++){
+              if(company_array[j]._id == user_array[i].company){
+                document.getElementById('inputGroupSelect05').value = company_array[j].id_company;
+              }
+            }
+            for(h=0; h < plan_array.length; h++){
+              let plan = "ObjectId("+ plan_array[h]._id + ")";
+              if(plan == user_array[i].plan || plan_array[h]._id == user_array[i].plan){
+
+                document.getElementById('inputGroupSelect06').value = plan_array[h].codigo;
+              }
+            }
+            if(user_array[i].role ==="Manager"){
+              document.getElementById('inputGroupSelect07').value = 1;
+            }else{
+              document.getElementById('inputGroupSelect07').value = 2;
+            }
+
+          }
+        }
+    }
+  </script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
+</body>
+
+</html>

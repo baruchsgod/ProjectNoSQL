@@ -134,6 +134,16 @@ const planSchema = new mongoose.Schema({
   quantity: Number
 })
 
+const errorSchema = new mongoose.Schema({
+  id:Number,
+  id_User:String,
+  err:String,
+  date_created:{
+    type: Date,
+    default: Date.now
+  }
+})
+
 const Job = mongoose.model("Job", jobSchema);
 const Category = mongoose.model("Category", categorySchema);
 const Country = mongoose.model("Country", countrySchema);
@@ -142,6 +152,7 @@ const Company = mongoose.model("Company", companySchema);
 const Task = mongoose.model("Task", taskSchema);
 const Comment = mongoose.model("Comment", commentSchema);
 const Plan = mongoose.model("Plan", planSchema);
+const Error = mongoose.model("Error", errorSchema);
 
 app.get("/", function(req, res) {
 
@@ -153,6 +164,18 @@ app.get("/", function(req, res) {
       }
     } else {
       console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+
     }
   });
 
@@ -190,6 +213,17 @@ app.get("/", function(req, res) {
       success = "";
     } else {
       console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
     }
   });
 
@@ -222,10 +256,32 @@ app.get("/home/:user", function(req, res) {
           });
         } else {
           console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
         }
       })
     } else {
       console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
     }
   })
 })
@@ -254,10 +310,32 @@ app.get("/home/:manager/:employee/:name", function(req, res) {
           });
         } else {
           console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
         }
       })
     } else {
       console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
     }
   })
 })
@@ -271,15 +349,211 @@ app.get("/home/reports/:user", function(req, res) {
       let name = userFound.name;
       let role = userFound.role;
       let team = userFound.team;
+      if(role==="Admin"){
+        res.render("reportAdmin", {name:name, user:user, role:role});
+      }else{
+        res.render("report", {
+          name: name,
+          user: user,
+          role: role,
+          employee_list: team
+        });
+      }
 
-      res.render("report", {
-        name: name,
-        user: user,
-        role: role,
-        employee_list: team
-      });
+
     } else {
       console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+    }
+  });
+});
+
+app.get("/:name/:user/:role", function(req,res){
+  let name = req.params.name;
+  let user = req.params.user;
+  let role = req.params.role;
+
+  Task.find({}, function(err, foundTasks){
+    if(!err){
+      let tasks = foundTasks;
+      res.render("tasks", {name:name, user:user, role:role, checklist:tasks});
+    }else{
+      console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+    }
+  })
+});
+
+app.get("/error/:name/:user/list", function(req,res){
+  let name = req.params.name;
+  let user = req.params.user;
+  Error.find({}, function(err, foundErrors){
+    if(!err){
+      let errors = foundErrors;
+      res.render("error", {name:name, user:user, errors:errors});
+    }else{
+      console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+    }
+  })
+});
+
+app.get("/reports/:name/:user", function(req, res){
+  let user = req.params.user;
+  let name = req.params.name;
+  let table_team = [];
+
+  User.findOne({id_user:user}, function(err, foundUser){
+    if(!err){
+      let myTeam = foundUser.team;
+      console.log(myTeam.length);
+      Task.find({}, function(err, foundTask){
+        if(!err){
+          let tasks = foundTask;
+          if(myTeam.length>0){
+            for(i=0; i < myTeam.length; i++){
+              let total = 0;
+              for(j=0; j < tasks.length; j++){
+                if(myTeam[i].id_users === tasks[j].id_user){
+                  total ++;
+                }
+              }
+              table_team.push({id_user:myTeam[i].id_users, name:myTeam[i].id_users, lname:myTeam[i].lnames, total:total  });
+            }
+          }
+          res.render("myteam",{user:user, myteam:table_team, name:name});
+        }else{
+          console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+        }
+      });
+
+    }else{
+      console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+    }
+  });
+})
+
+app.get("/late/:name/:user", function(req,res){
+  let name = req.params.name;
+  let user = req.params.user;
+  let table_task = [];
+  let total = 0;
+  User.findOne({id_user:user}, function(err, foundUser){
+    if(!err){
+      let myTeam = foundUser.team;
+      Task.find({}, function(err, foundTask){
+        if(!err){
+          let tasks = foundTask;
+          if(myTeam.length>0){
+
+            for(i=0; i < myTeam.length; i++){
+
+              for(j=0; j < tasks.length; j++){
+                if(myTeam[i].id_users === tasks[j].id_user){
+                  let due_date = tasks[j].due_date;
+                  let today = new Date();
+                  let date_diff = 0;
+                  date_diff = today - due_date;
+
+                  if (date_diff > 0) {
+                    let id = tasks[j]._id;
+                    let id_task = tasks[j].id_task;
+                    let name_task = tasks[j].name;
+                    let desc = tasks[j].description;
+                    let user_team = myTeam[i].id_users;
+                    let date_due = date.getDate(tasks[j].due_date);
+                    let days_late = Math.floor((date_diff / (1000*60*60*24)))+1;
+                    table_task.push({id_task:id_task, name_task:name_task, desc:desc, task_user:user_team, due_date:date_due, days_late: days_late, id:id});
+                    total++;
+                  }
+
+
+                }
+              }
+            }
+          }
+          res.render("late",{user:user, myteam:table_task, name:name, total:total});
+        }else{
+          console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+        }
+      });
+
+    }else{
+      console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
     }
   });
 });
@@ -300,6 +574,17 @@ app.get("/capacity/:user", function(req, res) {
       });
     } else {
       console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
     }
   })
 
@@ -320,6 +605,17 @@ app.get("/compose/:username", function(req, res) {
       });
     } else {
       console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
     }
   })
 
@@ -346,11 +642,33 @@ app.get("/capacity1/:user", function(req, res) {
           });
         } else {
           console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
         }
       })
 
     } else {
       console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
     }
   })
 })
@@ -387,6 +705,17 @@ app.get("/checklist/:id", function(req, res) {
             });
           } else {
             console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
           }
         })
 
@@ -395,6 +724,17 @@ app.get("/checklist/:id", function(req, res) {
       }
     } else {
       console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
     }
   });
 });
@@ -418,10 +758,32 @@ app.get("/setting/:selector/:user", function(req, res) {
             });
           } else {
             console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
           }
         });
       } else {
         console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
       }
     });
   } else if (selector === "country") {
@@ -471,6 +833,17 @@ app.get("/checklist/:id/:user", function(req, res) {
             });
           } else {
             console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
           }
         })
 
@@ -479,6 +852,17 @@ app.get("/checklist/:id/:user", function(req, res) {
       }
     } else {
       console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
     }
   });
 });
@@ -499,6 +883,17 @@ app.get("/home/settings/:user", function(req, res) {
       });
     } else {
       console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
     }
   });
 
@@ -507,6 +902,7 @@ app.get("/home/settings/:user", function(req, res) {
 app.get("/settings/:selector/:user", function(req, res) {
   let selector = req.params.selector;
   let user = req.params.user;
+
   if (selector === "company") {
     Company.find({}, function(err, foundCompany) {
       if (!err) {
@@ -526,6 +922,17 @@ app.get("/settings/:selector/:user", function(req, res) {
                 });
               } else {
                 console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
               }
             })
 
@@ -536,18 +943,399 @@ app.get("/settings/:selector/:user", function(req, res) {
 
       } else {
         console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
       }
     })
   } else if (selector === "country") {
+    Country.find({}, function(err, foundCountry){
+      if(!err){
+        let countries = foundCountry;
+        res.render("modifyCountry", {selector:selector, user:user, countries:countries});
+      }else{
+        console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+      }
+    });
+  } else if (selector === "users") {
+    User.find({}, function(err, foundUser){
+      if(!err){
+        let users = foundUser;
 
-  } else if (selector === "plan") {
+        Company.find({}, function(err, foundCompany){
+          if(!err){
+            let companies = foundCompany;
 
-  } else if (selector === "user") {
+            Plan.find({}, function(err, foundPlan){
+              if(!err){
+                let plans = foundPlan;
+                res.render("modifyUser", {selector:selector, user:user, users:users, companies:companies, plans:plans});
+              }else{
+                console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+              }
+            })
+          }else{
+            console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+          }
+        });
 
+      }else{
+        console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+      }
+    })
   } else {
-
+    let manager = req.body.selectedManager;
+    User.find({}, function(err, foundUser){
+      if(!err){
+        let users=foundUser;
+        res.render("modifyTeam", {selector:selector, user:user, users:users, manager:manager});
+      }else{
+        console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+      }
+    });
   }
 });
+
+app.get("/delete/:selector/:user", function(req, res){
+  let selector = req.params.selector;
+  let user = req.params.user;
+
+  if(selector === "company"){
+    Company.find({}, function(err, foundCompany){
+      if(!err){
+        let companies = foundCompany;
+        res.render("deleteItem", {selector:selector, user:user, companies:companies})
+      }else{
+        console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+      }
+    });
+  }else if(selector ==="country"){
+    Country.find({}, function(err, foundCountry){
+      if(!err){
+        let countries = foundCountry;
+        res.render("deleteCountry", {selector:selector, user:user, countries:countries})
+      }else{
+        console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+      }
+    });
+  }else if(selector === "user"){
+    User.find({}, function(err, foundUser){
+      if(!err){
+        let users = foundUser;
+        res.render("deleteUser", {selector:selector, user:user, users:users})
+      }else{
+        console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+      }
+    });
+  }
+});
+
+app.post("/search/regex", function(req, res){
+  let search = req.body.search;
+  let user = req.body.txtUser;
+  let name = req.body.txtName;
+  let search_regex = "/"+search+"/"
+  console.log(search_regex);
+  Task.find({name: new RegExp(search)},function(err, foundTasks){
+    if(!err){
+      let tasks = foundTasks;
+      res.render("tasks", {name:name, user:user, checklist:tasks});
+    }else{
+      console.log(err);
+    }
+  });
+})
+
+app.post("/delete/collection/items", function(req, res){
+  let selector = req.body.selector;
+  let user = req.body.user;
+
+  if(selector === "company"){
+    let company = req.body.selectedCompany;
+    Company.findOneAndDelete({id_company:company}, function(err){
+      if(!err){
+        User.findOne({
+          id_user: user
+        }, function(err, foundUser) {
+          if (!err) {
+            let role = foundUser.role;
+            let name = foundUser.name;
+            res.render("setting", {
+              user: user,
+              role: role,
+              name: name,
+              message: "You have deleted a company succesfully"
+            });
+          } else {
+            console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+          }
+        });
+      }else{
+        console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+      }
+    });
+  }else if(selector ==="country"){
+    let country = req.body.selectedCountry;
+    Country.findOneAndDelete({codigo:country}, function(err){
+      if(!err){
+        User.findOne({
+          id_user: user
+        }, function(err, foundUser) {
+          if (!err) {
+            let role = foundUser.role;
+            let name = foundUser.name;
+            res.render("setting", {
+              user: user,
+              role: role,
+              name: name,
+              message: "You have deleted a country succesfully"
+            });
+          } else {
+            console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+          }
+        });
+      }else{
+        console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+      }
+    });
+  }else{
+    let userDelete = req.body.selectedUser;
+    User.findOneAndDelete({id_user:userDelete}, function(err){
+      if(!err){
+        User.findOne({
+          id_user: user
+        }, function(err, foundUser) {
+          if (!err) {
+            let role = foundUser.role;
+            let name = foundUser.name;
+            res.render("setting", {
+              user: user,
+              role: role,
+              name: name,
+              message: "You have deleted an user succesfully"
+            });
+          } else {
+            console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+          }
+        });
+      }else{
+        console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+      }
+    });
+  }
+});
+
+app.post("/modify/collection/team", function(req,res){
+  let userCurrent = req.body.user;
+  let user = req.body.selectedMember;
+  let manager = req.body.manager;
+  User.findOneAndUpdate({id_user:manager}, {$pull:{team:{id_users:user}}}, function(err){
+    if(!err){
+      User.findOne({
+        id_user: userCurrent
+      }, function(err, foundUser) {
+        if (!err) {
+          let role = foundUser.role;
+          let name = foundUser.name;
+          res.render("setting", {
+            user: userCurrent,
+            role: role,
+            name: name,
+            message: "You have deleted team member succesfully"
+          });
+        } else {
+          console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+        }
+      });
+    }else{
+      console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+    }
+  })
+})
 
 app.post("/modify/collection", function(req, res) {
   let user = req.body.user;
@@ -594,14 +1382,219 @@ app.post("/modify/collection", function(req, res) {
             });
           } else {
             console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
           }
         });
       } else {
         console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
       }
     })
+  }else if(selector ==="country"){
+    let country_name = req.body.country;
+    let currency_name = req.body.currency;
+    let selected_country = req.body.selected_country;
+    console.log("this is codigo "+selected_country);
+    Country.findOneAndUpdate({codigo:selected_country},{name:country_name, currency:currency_name}, function(err){
+      if(!err){
+        User.findOne({
+          id_user: user
+        }, function(err, foundUser) {
+          if (!err) {
+            let role = foundUser.role;
+            let name = foundUser.name;
+            res.render("setting", {
+              user: user,
+              role: role,
+              name: name,
+              message: "You have updated the country table succesfully"
+            });
+          } else {
+            console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+          }
+        });
+      }else{
+        console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+      }
+    });
+  }else if(selector === "users"){
+    let name = req.body.nameUser;
+    let lname = req.body.lastname;
+    let email = req.body.emailUser;
+    let company = req.body.selectedCompany;
+    let plan = req.body.selectedPlan;
+    let role = req.body.selectedRole;
+    let pass = req.body.txtPass;
+    let userModify = req.body.selected_user;
+    let teamArray = [];
+    console.log(role);
+    if(role==1){
+      role = "Manager";
+      User.findOne({id_user:userModify}, function(err, foundU){
+        if(!err){
+          teamArray = foundU.team;
+        }else{
+          console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+        }
+      });
+    }else{
+      role="Supervisor";
+    }
 
-
+    Company.findOne({id_company:company}, function(err, foundCompany){
+      if(!err){
+        let newCompany=foundCompany._id;
+        Plan.findOne({codigo:plan}, function(err, foundPlan){
+          if(!err){
+            let newPlan = foundPlan._id;
+            User.findOneAndUpdate({id_user:userModify}, {name:name, lname:lname, credentials:{email:email, password:pass}, company:newCompany, role:role, plan:newPlan, team:teamArray}, function(err){
+              if(!err){
+                User.findOne({
+                  id_user: user
+                }, function(err, foundUser) {
+                  if (!err) {
+                    let role = foundUser.role;
+                    let name = foundUser.name;
+                    res.render("setting", {
+                      user: user,
+                      role: role,
+                      name: name,
+                      message: "You have modified the user succesfully"
+                    });
+                  } else {
+                    console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+                  }
+                });
+              }else{
+                console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+              }
+            })
+          }else{
+            console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+          }
+        })
+      }else{
+        console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+      }
+    })
+  }else{
+    let manager = req.body.selectedManager;
+    User.findOne({id_user:manager}, function(err, foundManager){
+      if(!err){
+        let team = foundManager.team;
+        res.render("TeamMember", {selector:selector, user:user, users:team, manager:manager})
+      }else{
+        console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
+      }
+    })
   }
 })
 
@@ -685,6 +1678,17 @@ app.post("/", function(req, res) {
               console.log("push of array item done");
             } else {
               console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
             }
           });
         }
@@ -693,6 +1697,17 @@ app.post("/", function(req, res) {
         res.redirect("/");
       } else {
         console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
       }
     })
 
@@ -739,6 +1754,17 @@ app.post("/", function(req, res) {
                     res.redirect("/home/" + user);
                   } else {
                     console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
                   }
                 })
 
@@ -753,6 +1779,17 @@ app.post("/", function(req, res) {
 
       } else {
         console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
         console.log("Error Error");
       }
     });
@@ -808,17 +1845,50 @@ app.post("/compose/collection", function(req, res) {
                 });
               } else {
                 console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
               }
             });
 
           } else {
             console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
           }
         })
 
 
       } else {
         console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
       }
     });
   } else if (selector === "country") {
@@ -849,14 +1919,47 @@ app.post("/compose/collection", function(req, res) {
                 });
               } else {
                 console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
               }
             });
           } else {
             console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
           }
         });
       } else {
         console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
       }
     })
   } else {
@@ -893,10 +1996,32 @@ app.post("/compose/collection", function(req, res) {
                 });
               } else {
                 console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
               }
             });
           } else {
             console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
           }
         });
       } else {
@@ -927,10 +2052,32 @@ app.post("/home", function(req, res) {
             res.redirect("/home/" + user1);
           } else {
             console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
           }
         });
       } else {
         console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
       }
     });
 
@@ -958,10 +2105,32 @@ app.post("/home", function(req, res) {
             res.redirect("/home/" + user1);
           } else {
             console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
           }
         });
       } else {
         console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
       }
     });
 
@@ -985,10 +2154,32 @@ app.post("/home", function(req, res) {
             res.redirect("/home/" + user1);
           } else {
             console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
           }
         });
       } else {
         console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
       }
     });
 
@@ -1049,10 +2240,32 @@ app.post("/compose", function(req, res) {
                                 });
                               } else {
                                 console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
                               }
                             });
                           } else {
                             console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
                           }
                         });
 
@@ -1066,6 +2279,17 @@ app.post("/compose", function(req, res) {
                       }
                     } else {
                       console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
                     }
                   });
 
@@ -1085,21 +2309,65 @@ app.post("/compose", function(req, res) {
                           });
                         } else {
                           console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
                         }
                       });
 
                     } else {
                       console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
                     }
                   })
 
                 }
               } else {
                 console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
               }
             })
           } else {
             console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
           }
         })
       } else {
@@ -1107,6 +2375,17 @@ app.post("/compose", function(req, res) {
       }
     } else {
       console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
     }
   })
 });
@@ -1132,6 +2411,17 @@ app.post("/checklist/add", function(req, res) {
 
     } else {
       console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
     }
   })
 })
@@ -1154,11 +2444,33 @@ app.post("/checklist/delete", function(req, res) {
           res.redirect("/checklist/" + id);
         } else {
           console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
         }
       });
 
     } else {
       console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
     }
   })
 })
@@ -1174,6 +2486,17 @@ app.post("/task/delete", function(req, res) {
       res.redirect("/home/" + user_name);
     } else {
       console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
     }
   });
 
@@ -1205,6 +2528,17 @@ app.post("/comment/post", function(req, res) {
 
           } else {
             console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
           }
         });
       } else {
@@ -1225,11 +2559,33 @@ app.post("/comment/post", function(req, res) {
             }
           } else {
             console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
           }
         });
       }
     } else {
       console.log(err);
+      Error.find({}, function(err, foundErrors){
+        if(!err){
+          let id = foundErrors.length +1;
+          let arr_error =  [{id:id, err:err, date_created:new Date()}];
+          Error.insertMany(arr_error, function(err){
+            if(!err){
+              console.log("Inserted Error Succesfully")
+            }
+          })
+        }
+      })
     }
 
   });

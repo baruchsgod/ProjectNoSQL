@@ -135,7 +135,7 @@ body{
 }
 
 .navbar-left{
-  width: 35%;
+  width: 45%;
   margin-left: 550px;
 }
 
@@ -164,6 +164,15 @@ body{
 .employee{
   text-align: center;
   margin-top: 2%;
+}
+
+.position-nav{
+  margin-left: 57%;
+}
+
+.table-margin{
+  margin-top: 3%;
+  text-align: center;
 }
 
 /* ESPECIAL SELECTORS */

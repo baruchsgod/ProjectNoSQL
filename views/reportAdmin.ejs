@@ -29,22 +29,23 @@
 
       <ul class="nav navbar-nav justify-content-end aligned">
 
-
+        <% if(role ==="Admin"){ %>
           <li class="nav-item active">
-            <a class="nav-link" href="#"><%=name%> <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="#"><%=user%> <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/home/<%= user %>">Home</a>
+            <a class="nav-link" href="">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Reports</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/home/settings/<%= user %>">Settings</a>
+            <a class="nav-link" href="#">Settings</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/" tabindex="-1" aria-disabled="true">LogOut</a>
           </li>
+        <% } %>
 
 
       </ul>
@@ -52,69 +53,47 @@
   </nav>
 
   <div class="container">
-    <p><%= message %></p>
-  </div>
-  <div class="container">
     <div class="row row_margin">
       <div class="col-4">
         <div class="card">
           <div class="card-header">
-            Add Company
+            Check All Stickies
           </div>
           <div class="card-body">
             <h5 class="card-title">Description</h5>
-            <p class="card-text">Click this option to manipulate the company table</p>
-              <a href="/setting/company/<%= user %>" ><button class="btn btn-lg btn-warning fa fa-building"></button></i></a>
-              <a href="/settings/company/<%= user %>" ><button class="btn btn-lg btn-info fa fa-edit"></button></i></a>
-              <a href="/delete/company/<%= user %>" ><button class="btn btn-lg btn-danger fa fa-trash"></button></i></a>
+            <p class="card-text">This report will display all stickies per employee</p>
+            <a href="/<%= name %>/<%= user %>/<%= role%>" ><button class="btn btn-lg btn-warning fa fa-sticky-note"></button></i></a>
           </div>
         </div>
       </div>
       <div class="col-4">
         <div class="card">
           <div class="card-header">
-            Add Countries
+            Check the error log
           </div>
           <div class="card-body">
             <h5 class="card-title">Description</h5>
-            <p class="card-text">Click this option to manipulate the country table</p>
-            <a href="/setting/country/<%= user %>" ><button class="btn btn-lg btn-warning fa fa-flag"></button></i></a>
-            <a href="/settings/country/<%= user %>" ><button class="btn btn-lg btn-info fa fa-edit"></button></i></a>
-            <a href="/delete/country/<%= user %>" ><button class="btn btn-lg btn-danger fa fa-trash"></button></i></a>
-          </div>
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="card">
-          <div class="card-header">
-            Modify User
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">Description</h5>
-            <p class="card-text">Click this option to manipulate the user table</p>
-            <a href="/settings/users/<%= user %>" ><button class="btn btn-lg btn-info fa fa-edit"></button></i></a>
-            <a href="/delete/user/<%= user %>" ><button class="btn btn-lg btn-danger fa fa-trash"></button></i></a>
+            <p class="card-text">This report will display all errors in the database</p>
+            <a href="/error/<%= name %>/<%= user %>/list" ><button class="btn btn-lg btn-warning fa fa-bug"></button></i></a>
           </div>
         </div>
       </div>
     </div>
-    <div class="row row_margin">
-
+    <!-- <div class="row row_margin">
       <div class="col-4">
         <div class="card">
           <div class="card-header">
-            Delete Team Member
+            Add Plan
           </div>
           <div class="card-body">
             <h5 class="card-title">Description</h5>
-            <p class="card-text">Click this option to manipulate the team members</p>
-            <a href="/settings/team/<%= user %>" ><button class="btn btn-lg btn-danger fa fa-trash"></button></i></a>
+            <p class="card-text">Click this option to add a new plan</p>
+            <a href="#" ><button class="btn btn-lg btn-warning fa fa-shopping-bag"></button></i></a>
           </div>
         </div>
       </div>
     </div>
-
-  </div>
+  </div> -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 

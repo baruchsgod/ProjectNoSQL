@@ -29,7 +29,7 @@
 
       <ul class="nav navbar-nav justify-content-end aligned">
 
-        <% if(role ==="Admin"){ %>
+
           <li class="nav-item active">
             <a class="nav-link" href="#"><%=name%> <span class="sr-only">(current)</span></a>
           </li>
@@ -40,40 +40,20 @@
             <a class="nav-link" href="#">Reports</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Settings</a>
+            <a class="nav-link" href="/home/settings/<%= user %>">Settings</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/" tabindex="-1" aria-disabled="true">LogOut</a>
           </li>
-        <% }else if(role === "Manager"){ %>
-          <li class="nav-item active">
-            <a class="nav-link" href="#"><%=name%> <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Reports</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/" tabindex="-1" aria-disabled="true">LogOut</a>
-          </li>
-        <% }else{ %>
-          <li class="nav-item active">
-            <a class="nav-link" href="#"><%=name%> <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/" tabindex="-1" aria-disabled="true">LogOut</a>
-          </li>
-        <% } %>
+        
 
       </ul>
     </div>
   </nav>
 
+  <div class="container">
+    <p><%= message %></p>
+  </div>
   <div class="container">
     <div class="row row_margin">
       <div class="col-4">
@@ -85,22 +65,8 @@
             <h5 class="card-title">Description</h5>
             <p class="card-text">Click this option to manipulate the company table</p>
               <a href="/setting/company/<%= user %>" ><button class="btn btn-lg btn-warning fa fa-building"></button></i></a>
-              <a href="#" ><button class="btn btn-lg btn-info fa fa-edit"></button></i></a>
+              <a href="/settings/company/<%= user %>" ><button class="btn btn-lg btn-info fa fa-edit"></button></i></a>
               <a href="#" ><button class="btn btn-lg btn-danger fa fa-trash"></button></i></a>
-          </div>
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="card">
-          <div class="card-header">
-            Add Continents
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">Description</h5>
-            <p class="card-text">Click this option to manipulate the continent table</p>
-            <a href="/setting/continent/<%= user %>" ><button class="btn btn-lg btn-warning fa fa-globe"></button></i></a>
-            <a href="#" ><button class="btn btn-lg btn-info fa fa-edit"></button></i></a>
-            <a href="#" ><button class="btn btn-lg btn-danger fa fa-trash"></button></i></a>
           </div>
         </div>
       </div>
@@ -118,8 +84,6 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="row row_margin">
       <div class="col-4">
         <div class="card">
           <div class="card-header">
@@ -135,6 +99,35 @@
         </div>
       </div>
     </div>
+    <div class="row row_margin">
+      <div class="col-4">
+        <div class="card">
+          <div class="card-header">
+            Modify User
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Description</h5>
+            <p class="card-text">Click this option to manipulate the user table</p>
+            <a href="#" ><button class="btn btn-lg btn-info fa fa-edit"></button></i></a>
+            <a href="#" ><button class="btn btn-lg btn-danger fa fa-trash"></button></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card">
+          <div class="card-header">
+            Modify Team Member
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Description</h5>
+            <p class="card-text">Click this option to manipulate the team members</p>
+            <a href="#" ><button class="btn btn-lg btn-info fa fa-edit"></button></i></a>
+            <a href="#" ><button class="btn btn-lg btn-danger fa fa-trash"></button></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>

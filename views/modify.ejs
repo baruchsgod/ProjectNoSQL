@@ -43,16 +43,29 @@
       </ul>
   </nav>
   <% if(selector==="company"){ %>
+
+
   <div class="container">
-    <h1 class="form_checklist">Add a company</h1>
-    <form class="form_checklist" action="/compose/collection" method="POST">
+    <div class="form-group">
+      <label>Select the company</label>
+      <select name="selectedCompany" class="custom-select" id="inputGroupSelect01" onblur="selectedCompany(this)">
+        <option selected>Choose...</option>
+        <% for(i=0;i<company.length;i++){ %>
+
+        <option value=<%= company[i].id_company %>><%= company[i].name %></option>
+
+        <% } %>
+      </select>
+    </div>
+    <h1 class="form_checklist">Modify company</h1>
+    <form class="form_checklist" action="/modify/collection" method="POST">
       <div class="form-group">
         <label>Name</label>
         <input id="company" type="text" class="form-control" name="company" autocomplete="off" required placeholder="Add the company name">
       </div>
       <div class="form-group">
         <label>Select the country</label>
-        <select name="selectedCountry" class="custom-select" id="inputGroupSelect01">
+        <select name="selectedCountry" class="custom-select" id="inputGroupSelect03" required>
           <option selected>Choose...</option>
           <% for(i=0;i<countries.length;i++){ %>
           <option value=<%= countries[i].codigo %>><%= countries[i].name %></option>
@@ -64,8 +77,8 @@
         <input id="employees" class="form-control" type="text" name="employees" required>
       </div>
       <div class="form-group">
-        <label>Street Addres</label>
-        <input id="streetAddress" class="form-control" type="text" name="streetAddress" required>
+        <label>street Addres</label>
+        <input id="streetA" class="form-control" type="text" name="streetAddress" required>
       </div>
       <div class="form-group">
         <label>City</label>
@@ -88,6 +101,7 @@
           <% } %>
         </select>
       </div>
+      <<input id="selectedCompany" type="hidden" name="selectedCompany" value="">
       <input type="hidden" name="selector" value=<%= selector%>>
       <input type="hidden" name="user" value=<%=user%>>
       <button class="btn btn-lg btn-info" type="submit">Create</button>
@@ -144,6 +158,30 @@
     </div>
 
   <% } %>
+
+  <<script>
+    function selectedCompany(valor){
+      var company = document.getElementById('inputGroupSelect01');
+      var selected_company = company.options[company.selectedIndex].value;
+      var array_ejs = <%- JSON.stringify(company) %>;
+      for(i=0; i<array_ejs.length; i++){
+
+        if(array_ejs[i].id_company == selected_company){
+          document.getElementById('company').value = array_ejs[i].name;
+
+          document.getElementById('inputGroupSelect03').value = array_ejs[i].country;
+          document.getElementById('employees').value = array_ejs[i].num_Employees;
+          document.getElementById('streetA').value = array_ejs[i].address[0].streetAddres;
+          document.getElementById('city').value = array_ejs[i].address[0].city;
+          document.getElementById('dept').value = array_ejs[i].address[0].dept;
+          document.getElementById('zip').value = array_ejs[i].address[0].zip;
+          document.getElementById('inputGroupSelect02').value = array_ejs[i].plan;
+          document.getElementById('selectedCompany').value = selected_company;
+
+        }
+      }
+    }
+  </script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 

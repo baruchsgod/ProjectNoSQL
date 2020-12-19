@@ -7,14 +7,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Modak&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-  <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="../../../../css/styles.css">
   <script src="https://use.fontawesome.com/f58802a848.js"></script>
 </head>
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand nav-pad" href="#">
-      <img src="../../images/sticky.png" alt="sticky" class="homeSticky">
+      <img src="../../../../images/sticky.png" alt="sticky" class="homeSticky">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -64,9 +64,9 @@
           <div class="card-body">
             <h5 class="card-title">Description</h5>
             <p class="card-text">Click this option to manipulate the company table</p>
-              <a href="/setting/company/<%= user %>" ><button class="btn btn-lg btn-warning fa fa-building"></button></i></a>
-              <a href="/settings/company/<%= user %>" ><button class="btn btn-lg btn-info fa fa-edit"></button></i></a>
-              <a href="/delete/company/<%= user %>" ><button class="btn btn-lg btn-danger fa fa-trash"></button></i></a>
+              <a href="/setting/company/<%= user %>/add/company/final/adding" ><button class="btn btn-lg btn-warning fa fa-building"></button></i></a>
+              <a href="/settings/company/<%= user %>/add/company/final" ><button class="btn btn-lg btn-info fa fa-edit"></button></i></a>
+              <a href="/delete/company/<%= user %>/delete/item/company/update" ><button class="btn btn-lg btn-danger fa fa-trash"></button></i></a>
           </div>
         </div>
       </div>
@@ -78,9 +78,9 @@
           <div class="card-body">
             <h5 class="card-title">Description</h5>
             <p class="card-text">Click this option to manipulate the country table</p>
-            <a href="/setting/country/<%= user %>" ><button class="btn btn-lg btn-warning fa fa-flag"></button></i></a>
-            <a href="/settings/country/<%= user %>" ><button class="btn btn-lg btn-info fa fa-edit"></button></i></a>
-            <a href="/delete/country/<%= user %>" ><button class="btn btn-lg btn-danger fa fa-trash"></button></i></a>
+            <a href="/setting/country/<%= user %>/add/company/final/adding" ><button class="btn btn-lg btn-warning fa fa-flag"></button></i></a>
+            <a href="/settings/country/<%= user %>/add/company/final" ><button class="btn btn-lg btn-info fa fa-edit"></button></i></a>
+            <a href="/delete/country/<%= user %>/delete/item/company/update" ><button class="btn btn-lg btn-danger fa fa-trash"></button></i></a>
           </div>
         </div>
       </div>
@@ -92,8 +92,8 @@
           <div class="card-body">
             <h5 class="card-title">Description</h5>
             <p class="card-text">Click this option to manipulate the user table</p>
-            <a href="/settings/users/<%= user %>" ><button class="btn btn-lg btn-info fa fa-edit"></button></i></a>
-            <a href="/delete/user/<%= user %>" ><button class="btn btn-lg btn-danger fa fa-trash"></button></i></a>
+            <a href="/settings/users/<%= user %>/add/company/final" ><button class="btn btn-lg btn-info fa fa-edit"></button></i></a>
+            <a href="/delete/user/<%= user %>/delete/item/company/update" ><button class="btn btn-lg btn-danger fa fa-trash"></button></i></a>
           </div>
         </div>
       </div>
@@ -108,7 +108,7 @@
           <div class="card-body">
             <h5 class="card-title">Description</h5>
             <p class="card-text">Click this option to manipulate the team members</p>
-            <a href="/settings/team/<%= user %>" ><button class="btn btn-lg btn-danger fa fa-trash"></button></i></a>
+            <a href="/settings/team/<%= user %>/add/company/final" ><button class="btn btn-lg btn-danger fa fa-trash"></button></i></a>
           </div>
         </div>
       </div>

@@ -239,7 +239,7 @@ app.get("/home/:user", function(req, res) {
     id_user: user_checklist
   }, function(err, users) {
     if (!err) {
-      let names = users.name;
+      let name = users.name;
       let roleUser = users.role;
       console.log(users);
       console.log("this is yuval role: " + roleUser);
@@ -250,7 +250,7 @@ app.get("/home/:user", function(req, res) {
           let list = itemChecklists;
           res.render("home1", {
             user: user_checklist,
-            name: names,
+            name: name,
             role: roleUser,
             checklist: list
           });
@@ -352,6 +352,7 @@ app.get("/home/reports/:user", function(req, res) {
       if(role==="Admin"){
         res.render("reportAdmin", {name:name, user:user, role:role});
       }else{
+
         res.render("report", {
           name: name,
           user: user,
@@ -428,11 +429,11 @@ app.get("/error/:name/:user/list", function(req,res){
   })
 });
 
-app.get("/reports/:name/:user", function(req, res){
+app.get("/reports/:name/:user/reports", function(req, res){
   let user = req.params.user;
   let name = req.params.name;
   let table_team = [];
-
+  console.log("check my team")
   User.findOne({id_user:user}, function(err, foundUser){
     if(!err){
       let myTeam = foundUser.team;
@@ -485,9 +486,10 @@ app.get("/reports/:name/:user", function(req, res){
   });
 })
 
-app.get("/late/:name/:user", function(req,res){
+app.get("/late/:name/:user/late", function(req,res){
   let name = req.params.name;
   let user = req.params.user;
+  console.log("pase por aca");
   let table_task = [];
   let total = 0;
   User.findOne({id_user:user}, function(err, foundUser){
@@ -692,17 +694,26 @@ app.get("/checklist/:id", function(req, res) {
         }, function(err, foundComment) {
           if (!err) {
             let comment_list = foundComment;
-            res.render("checklist", {
-              object_id: new_id_checklist,
-              id: id,
-              name: name,
-              descrip: descrip,
-              user_checklist: user_checklist,
-              date_created: date_created,
-              due_da: due_da,
-              activity: activity,
-              comments: comment_list
+            User.findOne({id_user:user_checklist}, function(err, foundUser){
+              if(!err){
+                let roles = foundUser.role;
+                res.render("checklist", {
+                  object_id: new_id_checklist,
+                  id: id,
+                  name: name,
+                  descrip: descrip,
+                  user_checklist: user_checklist,
+                  date_created: date_created,
+                  due_da: due_da,
+                  activity: activity,
+                  comments: comment_list,
+                  role:roles
+                });
+              }else{
+
+              }
             });
+
           } else {
             console.log(err);
       Error.find({}, function(err, foundErrors){
@@ -739,7 +750,7 @@ app.get("/checklist/:id", function(req, res) {
   });
 });
 
-app.get("/setting/:selector/:user", function(req, res) {
+app.get("/setting/:selector/:user/add/company/final/adding", function(req, res) {
   let selector = req.params.selector;
   let user = req.params.user;
 
@@ -800,7 +811,7 @@ app.get("/setting/:selector/:user", function(req, res) {
 
 });
 
-app.get("/checklist/:id/:user", function(req, res) {
+app.get("/checklist/:id/:user/final/report/employee/final/tasks", function(req, res) {
   let id_checklist = req.params.id;
   let user_manager = req.params.user;
 
@@ -867,7 +878,7 @@ app.get("/checklist/:id/:user", function(req, res) {
   });
 });
 
-app.get("/home/settings/:user", function(req, res) {
+app.get("/home/settings/:user/settings/final", function(req, res) {
   let user = req.params.user;
   User.findOne({
     id_user: user
@@ -899,7 +910,7 @@ app.get("/home/settings/:user", function(req, res) {
 
 });
 
-app.get("/settings/:selector/:user", function(req, res) {
+app.get("/settings/:selector/:user/add/company/final", function(req, res) {
   let selector = req.params.selector;
   let user = req.params.user;
 
@@ -1059,7 +1070,7 @@ app.get("/settings/:selector/:user", function(req, res) {
   }
 });
 
-app.get("/delete/:selector/:user", function(req, res){
+app.get("/delete/:selector/:user/delete/item/company/update", function(req, res){
   let selector = req.params.selector;
   let user = req.params.user;
 

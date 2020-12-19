@@ -34,7 +34,7 @@
             <a class="nav-link" href="#"><%=user%> <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="">Home</a>
+            <a class="nav-link" href="/home/<%= user%>">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Reports</a>
@@ -50,7 +50,7 @@
             <a class="nav-link" href="#"><%=name%> <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="">Home</a>
+            <a class="nav-link" href="/home/<%= user%>">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Reports</a>
@@ -98,7 +98,7 @@
           <div class="card-body">
             <h5 class="card-title">Description</h5>
             <p class="card-text">This report will display all late stickies per employee</p>
-            <a href="/late/<%= name %>/<%= user %>" ><button class="btn btn-lg btn-warning fa fa-calendar"></button></i></a>
+            <a href="/late/<%= name %>/<%= user %>/late" ><button class="btn btn-lg btn-warning fa fa-calendar"></button></i></a>
           </div>
         </div>
       </div>
@@ -110,7 +110,7 @@
           <div class="card-body">
             <h5 class="card-title">Description</h5>
             <p class="card-text">See all the details of my team</p>
-            <a href="/reports/<%= name %>/<%= user %>" ><button class="btn btn-lg btn-warning fa fa-users"></button></i></a>
+            <a href="/reports/<%= name %>/<%= user %>/reports" ><button class="btn btn-lg btn-warning fa fa-users"></button></i></a>
           </div>
         </div>
       </div>
